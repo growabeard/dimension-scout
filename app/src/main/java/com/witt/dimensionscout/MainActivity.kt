@@ -7,41 +7,31 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.witt.dimensionscout.data.repository.GreetingRepositoryImpl
+import com.witt.dimensionscout.domain.use_case.GetGreetingUseCase
+import com.witt.dimensionscout.presentation.greeting.GreetingScreen
+import com.witt.dimensionscout.presentation.greeting.GreetingViewModel
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        val repository = GreetingRepositoryImpl()
+        val useCase = GetGreetingUseCase(repository)
+        val viewModel = GreetingViewModel(useCase)
+
         enableEdgeToEdge()
         setContent {
             DimensionScoutTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    GreetingScreen(
+                        state = viewModel.state.value,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    DimensionScoutTheme {
-        Greeting("Android")
     }
 }
