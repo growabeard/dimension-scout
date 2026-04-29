@@ -21,8 +21,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
     fun getCharacters() {
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            val response = useCase.invoke(_state.value.query)
-            when (response) {
+            when (val response = useCase.invoke(_state.value.query)) {
                 is RMResponse.Success -> {
                     _state.update { it.copy(characters = response.data.results) }
                 }
