@@ -52,6 +52,8 @@ dependencies {
     implementation(libs.koin.androidx.compose)
     implementation(libs.koin.android)
     implementation(libs.kotlin.coroutines)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
