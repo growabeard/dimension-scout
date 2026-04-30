@@ -14,12 +14,13 @@ import androidx.navigation.toRoute
 import com.witt.dimensionscout.domain.model.Location
 import com.witt.dimensionscout.domain.model.Origin
 import com.witt.dimensionscout.domain.model.RMCharacter
+import com.witt.dimensionscout.navigation.CharacterDetail
+import com.witt.dimensionscout.navigation.CharacterGrid
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
 import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
-import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
 @Preview(showSystemUi = true)
@@ -156,7 +157,7 @@ fun CharacterSearchRoute(
                     navController.popBackStack()
                 })
             } else {
-                // Handle error or loading state
+                navController.popBackStack()
             }
         }
     }
@@ -204,9 +205,3 @@ fun CharacterSearchScreen(
         }
     }
 }
-
-@Serializable
-object CharacterGrid
-
-@Serializable
-data class CharacterDetail(val itemId: Int)
