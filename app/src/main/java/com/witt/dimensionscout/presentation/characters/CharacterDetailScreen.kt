@@ -2,8 +2,13 @@ package com.witt.dimensionscout.presentation.characters
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -14,8 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Location
@@ -70,15 +78,21 @@ fun CharacterDetailScreen(character: RMCharacter, onCloseButtonClick: () -> Unit
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column {
+            Column(modifier = Modifier.padding(16.dp)) {
                 AsyncImage(
                     model = character.image,
-                    contentDescription = character.name,
+                    contentDescription = stringResource(R.string.image_of_character, character.name),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(12.dp)),
+                    contentScale = ContentScale.Crop
                 )
+                Spacer (modifier = Modifier.height(16.dp))
                 Text(text = "Species: ${character.species}")
                 Text(text = "Status: ${character.status}")
                 Text(text = "Origin: ${character.origin.name}")
-                Text(text = "Type: ${character.type}")
+                if (character.type.isNotEmpty()) Text(text = "Type: ${character.type}")
                 Text(text = "Created: ${character.getDisplayDate()}")
             }
         }
