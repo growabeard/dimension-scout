@@ -1,5 +1,8 @@
 package com.witt.dimensionscout.domain.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CharacterResponse(
     val info: Info,
     val results: List<RMCharacter>
@@ -12,6 +15,7 @@ data class CharacterResponse(
     }
 }
 
+@Serializable
 data class Info(
     val count: Int,
     val pages: Int,
@@ -19,6 +23,7 @@ data class Info(
     val prev: String? = null
 )
 
+@Serializable
 data class RMCharacter(
     val id: Int,
     val name: String,
@@ -34,11 +39,13 @@ data class RMCharacter(
     val created: String
 )
 
+@Serializable
 data class Origin(
     val name: String,
     val url: String
 )
 
+@Serializable
 data class Location(
     val name: String,
     val url: String

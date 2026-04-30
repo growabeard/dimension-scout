@@ -29,11 +29,11 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
         _state.update { it.copy(query = "") }
     }
 
-    fun onCharacterClick(index: Int) {
+    fun onCharacterClick(index: Int): Int {
         Log.d(TAG, "onCharacterClick: $index")
         val character = _state.value.characters[index]
         Log.d(TAG, "onCharacterClick: $character")
-        _state.update { it.copy(selectedCharacter = character) }
+        return character.id
     }
 
     fun getCharacters() {

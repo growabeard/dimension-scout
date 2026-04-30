@@ -80,7 +80,7 @@ fun CharacterList(characters: List<RMCharacter>, onCharacterClick: (Int) -> Unit
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp) // Better edge spacing
+        contentPadding = PaddingValues(8.dp)
     ) {
         items(characters.size, key = { index ->
             characters[index].id
