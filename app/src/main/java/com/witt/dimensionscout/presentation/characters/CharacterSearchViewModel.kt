@@ -1,5 +1,6 @@
 package com.witt.dimensionscout.presentation.characters
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.witt.dimensionscout.domain.model.RMResponse
@@ -14,15 +15,25 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
     private val _state = MutableStateFlow(CharacterSearchState())
     val state = _state.asStateFlow()
 
-    init {
+    val showClearButton: Boolean
+        get() = _state.value.query.isNotEmpty()
+
+    fun onQueryChange(newQuery: String) {
+        Log.d(TAG, "onQueryChange: $newQuery")
+        _state.update { it.copy(query = newQuery) }
         getCharacters()
     }
 
+    fun clearInput() {
+        Log.d(TAG, "clearInput")
+        _state.update { it.copy(query = "") }
+    }
+
     fun getCharacters() {
+        Log.d(TAG, "getCharacters")
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true) }
-            val response = useCase.invoke(_state.value.query)
-            when (response) {
+            _state.update { it.copy(isLoading = true, error = null) }
+            when (val response = useCase.invoke(_state.value.query)) {
                 is RMResponse.Success -> {
                     _state.update { it.copy(characters = response.data.results) }
                 }
@@ -33,5 +44,9 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
             }
             _state.update { it.copy(isLoading = false) }
         }
+    }
+
+    companion object {
+        private const val TAG = "CharacterSearchViewModel"
     }
 }
