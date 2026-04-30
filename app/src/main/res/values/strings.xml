@@ -5,4 +5,5 @@
     <string name="empty_results">No results found. Please try another search.</string>
     <string name="error_icon_description">An error occurred.</string>
     <string name="empty_icon_description">No results found.</string>
+    <string name="image_of_character">Image of %1$s</string>
 </resources>
