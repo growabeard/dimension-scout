@@ -7,5 +7,6 @@ data class CharacterSearchState(
     val query: String = "",
     val isLoading: Boolean = false,
     val hasSearched: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val selectedCharacter: RMCharacter? = null
 )
