@@ -52,11 +52,12 @@ fun CharacterSearchSearchWithResultsPreview() {
                         url = "https://rickandmortyapi.com/api/character/2",
                         created = "2017-11-04T18:50:21.651Z"
                     )
-                )
+                ),
             ),
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onCharacterClick = {},
             onQueryChange = {}
         )
     }
@@ -67,12 +68,11 @@ fun CharacterSearchSearchWithResultsPreview() {
 fun CharacterSearchSearchEmptyPreview() {
     DimensionScoutTheme {
         CharacterSearchScreen(
-            uiState = CharacterSearchState(
-                characters = emptyList()
-            ),
+            uiState = CharacterSearchState(),
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onCharacterClick = {},
             onQueryChange = {}
         )
     }
@@ -84,13 +84,13 @@ fun CharacterSearchSearchLoadingPreview() {
     DimensionScoutTheme {
         CharacterSearchScreen(
             uiState = CharacterSearchState(
-                characters = emptyList(),
+                query = "Rick",
                 isLoading = true,
-                query = "Rick"
             ),
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onCharacterClick = {},
             onQueryChange = {}
         )
     }
@@ -102,13 +102,13 @@ fun CharacterSearchSearchErrorPreview() {
     DimensionScoutTheme {
         CharacterSearchScreen(
             uiState = CharacterSearchState(
-                characters = emptyList(),
+                query = "Rick",
                 error = "Fake error",
-                query = "Rick"
             ),
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onCharacterClick = {},
             onQueryChange = {}
         )
     }
@@ -127,6 +127,7 @@ fun CharacterSearchRoute(
         onQueryChange = viewModel::onQueryChange,
         onSearch = viewModel::getCharacters,
         onClearInputClick = viewModel::clearInput,
+        onCharacterClick = viewModel::onCharacterClick,
         modifier = modifier
     )
 }
@@ -137,6 +138,7 @@ fun CharacterSearchScreen(
     uiState: CharacterSearchState,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
+    onCharacterClick: (Int) -> Unit,
     showClearButton: Boolean = false,
     onClearInputClick: () -> Unit
 ) {
@@ -163,7 +165,7 @@ fun CharacterSearchScreen(
             }
 
             uiState.characters.isNotEmpty() -> {
-                CharacterList(uiState.characters)
+                CharacterList(uiState.characters, onCharacterClick = onCharacterClick)
             }
 
             !uiState.isLoading && uiState.hasSearched -> {
