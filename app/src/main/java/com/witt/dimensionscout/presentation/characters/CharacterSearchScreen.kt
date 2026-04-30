@@ -3,25 +3,16 @@ package com.witt.dimensionscout.presentation.characters
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import com.witt.dimensionscout.domain.model.Location
 import com.witt.dimensionscout.domain.model.Origin
 import com.witt.dimensionscout.domain.model.RMCharacter
-import com.witt.dimensionscout.navigation.CharacterDetail
-import com.witt.dimensionscout.navigation.CharacterGrid
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
 import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
-import org.koin.androidx.compose.koinViewModel
 
 @Preview(showSystemUi = true)
 @Composable
@@ -117,49 +108,6 @@ fun CharacterSearchSearchErrorPreview() {
             onCharacterClick = {},
             onQueryChange = {}
         )
-    }
-}
-
-@Composable
-fun CharacterSearchRoute(
-    modifier: Modifier = Modifier,
-    viewModel: CharacterSearchViewModel = koinViewModel()
-) {
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
-    val navController = rememberNavController()
-
-    NavHost(
-        navController = navController,
-        startDestination = CharacterGrid
-    ) {
-        composable<CharacterGrid> {
-            CharacterSearchScreen(
-                uiState = uiState,
-                showClearButton = viewModel.showClearButton,
-                onQueryChange = viewModel::onQueryChange,
-                onSearch = viewModel::getCharacters,
-                onClearInputClick = viewModel::clearInput,
-                onCharacterClick = { index ->
-                    val characterId = viewModel.onCharacterClick(index)
-                    navController.navigate(CharacterDetail(characterId))
-                },
-                modifier = modifier
-            )
-        }
-
-        composable<CharacterDetail> { backStackEntry ->
-            val detailRoute: CharacterDetail = backStackEntry.toRoute()
-
-            val character = uiState.characters.find { it.id == detailRoute.itemId }
-
-            if (character != null) {
-                CharacterDetailScreen(character = character, onCloseButtonClick = {
-                    navController.popBackStack()
-                })
-            } else {
-                navController.popBackStack()
-            }
-        }
     }
 }
 
