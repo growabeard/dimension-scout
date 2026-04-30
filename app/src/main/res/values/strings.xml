@@ -2,4 +2,7 @@
     <string name="app_name">Dimension Scout</string>
     <string name="search_placeholder">Enter character name</string>
     <string name="clear_search_input">Clear search input</string>
+    <string name="empty_results">No results found. Please try another search.</string>
+    <string name="error_icon_description">An error occurred.</string>
+    <string name="empty_icon_description">No results found.</string>
 </resources>

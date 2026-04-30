@@ -1,8 +1,8 @@
 package com.witt.dimensionscout.presentation.characters
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -10,7 +10,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.witt.dimensionscout.domain.model.Location
 import com.witt.dimensionscout.domain.model.Origin
 import com.witt.dimensionscout.domain.model.RMCharacter
-import com.witt.dimensionscout.ui.components.CharacterSearchBar
+import com.witt.dimensionscout.presentation.characters.components.CharacterList
+import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
+import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
+import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -137,6 +140,13 @@ fun CharacterSearchScreen(
     showClearButton: Boolean = false,
     onClearInputClick: () -> Unit
 ) {
+
+    LaunchedEffect(uiState.query) {
+        if (!uiState.hasSearched) {
+            onSearch()
+        }
+    }
+
     Column(modifier = modifier) {
         CharacterSearchBar(
             uiState.query,
@@ -147,12 +157,18 @@ fun CharacterSearchScreen(
             onSearch
         )
 
-        if (uiState.isLoading) {
-            Text("Loading")
-        } else if (uiState.error != null) {
-            Text("Error: ${uiState.error}")
-        } else {
-            Text("There are ${uiState.characters.size} characters")
+        when {
+            uiState.error != null -> {
+                ErrorComponent(message = uiState.error)
+            }
+
+            uiState.characters.isNotEmpty() -> {
+                CharacterList(uiState.characters)
+            }
+
+            !uiState.isLoading && uiState.hasSearched -> {
+                EmptyResultsComponent()
+            }
         }
     }
 }
