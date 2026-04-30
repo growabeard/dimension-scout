@@ -138,4 +138,58 @@ class CharacterSearchViewModelTest {
         assertEquals(true, viewModel.showClearButton)
     }
 
+    @Test
+    fun `ensure calling onCharacterClick() sets selectedCharacter in state after getting characters`() = runTest {
+        coEvery { useCase.invoke(any()) }.returns(
+            RMResponse.Success(
+                data = CharacterResponse(
+                    info = Info(
+                        count = 2,
+                        pages = 1,
+                        next = null,
+                        prev = null
+                    ),
+                    results = listOf(
+                        RMCharacter(
+                            name = "Rick Sanchez",
+                            id = 1,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = Origin(name = "Earth", url = ""),
+                            location = Location(name = "Earth", url = ""),
+                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/1",
+                            created = "2017-11-04T18:48:46.250Z"
+                        ),
+                        RMCharacter(
+                            name = "Morty Smith",
+                            id = 2,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = Origin(name = "Earth", url = ""),
+                            location = Location(name = "Earth", url = ""),
+                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/2",
+                            created = "2017-11-04T18:50:21.651Z"
+                        )
+                    )
+                )
+            )
+        )
+
+        viewModel.getCharacters()
+
+        advanceUntilIdle()
+
+        viewModel.onCharacterClick(1)
+
+        assertEquals("Morty Smith", viewModel.state.value.selectedCharacter?.name)
+    }
+
 }
