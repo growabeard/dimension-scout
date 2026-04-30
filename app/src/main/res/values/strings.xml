@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Dimension Scout</string>
+    <string name="search_placeholder">Enter character name</string>
+    <string name="clear_search_input">Clear search input</string>
 </resources>
