@@ -3,13 +3,20 @@ package com.witt.dimensionscout.domain.model
 data class CharacterResponse(
     val info: Info,
     val results: List<RMCharacter>
-)
+) {
+    companion object {
+        val EMPTY = CharacterResponse(
+            info = Info(count = 0, pages = 0),
+            results = emptyList()
+        )
+    }
+}
 
 data class Info(
     val count: Int,
     val pages: Int,
-    val next: String?,
-    val prev: String?
+    val next: String? = null,
+    val prev: String? = null
 )
 
 data class RMCharacter(

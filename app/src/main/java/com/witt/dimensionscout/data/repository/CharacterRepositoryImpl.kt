@@ -2,12 +2,15 @@ package com.witt.dimensionscout.data.repository
 
 import android.util.Log
 import com.witt.dimensionscout.data.remote.CharacterApiService
+import com.witt.dimensionscout.domain.model.CharacterResponse
 import com.witt.dimensionscout.domain.model.RMResponse
 import com.witt.dimensionscout.domain.repository.CharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okio.IOException
 import retrofit2.HttpException
+import java.net.HttpURLConnection.HTTP_BAD_REQUEST
+import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 class CharacterRepositoryImpl(private val apiService: CharacterApiService) : CharacterRepository {
     override suspend fun getCharacters(query: String): RMResponse = withContext(Dispatchers.IO) {
@@ -20,7 +23,8 @@ class CharacterRepositoryImpl(private val apiService: CharacterApiService) : Cha
         } catch (e: HttpException) {
             Log.e(TAG, "HttpException calling getCharacters with code ${e.code()}: ${e.message}")
             when (e.code()) {
-                400, 404 -> RMResponse.Error("No results found, try another search.")
+                HTTP_NOT_FOUND -> RMResponse.Success(CharacterResponse.EMPTY)
+                HTTP_BAD_REQUEST -> RMResponse.Error("Invalid request, please try again later with different criteria.")
                 else -> RMResponse.Error("An error occurred, please try again later.")
             }
         } catch (e: Exception) {
