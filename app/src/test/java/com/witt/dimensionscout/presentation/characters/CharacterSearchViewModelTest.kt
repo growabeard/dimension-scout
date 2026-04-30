@@ -1,5 +1,6 @@
 package com.witt.dimensionscout.presentation.characters
 
+import android.util.Log
 import com.witt.dimensionscout.domain.model.CharacterResponse
 import com.witt.dimensionscout.domain.model.Info
 import com.witt.dimensionscout.domain.model.Location
@@ -10,7 +11,9 @@ import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -35,6 +38,12 @@ class CharacterSearchViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         MockKAnnotations.init(this)
+
+        mockkStatic(Log::class)
+        every { Log.d(any(), any()) } returns 0
+        every { Log.e(any(), any()) } returns 0
+
+        viewModel = CharacterSearchViewModel(useCase)
     }
 
     @Test
@@ -82,9 +91,6 @@ class CharacterSearchViewModelTest {
             )
         )
 
-        viewModel = CharacterSearchViewModel(useCase)
-
-
         viewModel.getCharacters()
 
         advanceUntilIdle()
@@ -95,17 +101,41 @@ class CharacterSearchViewModelTest {
     }
 
     @Test
-    fun `ensure getCharacters() sets error in state if useCase returns error`() = runTest(testDispatcher) {
-        val errorMessage = "Fake error"
-        coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(errorMessage))
+    fun `ensure getCharacters() sets error in state if useCase returns error`() =
+        runTest(testDispatcher) {
+            val errorMessage = "Fake error"
+            coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(errorMessage))
 
-        viewModel.getCharacters()
+            viewModel.getCharacters()
 
-        advanceUntilIdle()
+            advanceUntilIdle()
 
-        coVerify { useCase.invoke(any()) }
-        assertEquals(errorMessage, viewModel.state.value.error)
-        assertEquals(false, viewModel.state.value.isLoading)
+            coVerify { useCase.invoke(any()) }
+            assertEquals(errorMessage, viewModel.state.value.error)
+            assertEquals(false, viewModel.state.value.isLoading)
+        }
+
+    @Test
+    fun `ensure clearInput() sets query to empty`() = runTest(testDispatcher) {
+        viewModel.onQueryChange("Morty")
+        assertEquals("Morty", viewModel.state.value.query)
+
+        viewModel.clearInput()
+        assertEquals("", viewModel.state.value.query)
+    }
+
+    @Test
+    fun `ensure showClearButton is false when query is empty`() {
+        viewModel.onQueryChange("")
+
+        assertEquals(false, viewModel.showClearButton)
+    }
+
+    @Test
+    fun `ensure showClearButton is true when query is populated`() {
+        viewModel.onQueryChange("Rick")
+
+        assertEquals(true, viewModel.showClearButton)
     }
 
 }
