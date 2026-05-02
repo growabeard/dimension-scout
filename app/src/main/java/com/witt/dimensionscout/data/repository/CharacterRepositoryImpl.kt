@@ -2,7 +2,7 @@ package com.witt.dimensionscout.data.repository
 
 import android.util.Log
 import com.witt.dimensionscout.data.remote.CharacterApiService
-import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.data.remote.dto.RMResponse
 import com.witt.dimensionscout.domain.repository.CharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

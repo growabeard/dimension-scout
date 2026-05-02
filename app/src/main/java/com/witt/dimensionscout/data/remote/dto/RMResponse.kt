@@ -1,4 +1,4 @@
-package com.witt.dimensionscout.data.model
+package com.witt.dimensionscout.data.remote.dto
 
 import com.witt.dimensionscout.domain.model.Character
 

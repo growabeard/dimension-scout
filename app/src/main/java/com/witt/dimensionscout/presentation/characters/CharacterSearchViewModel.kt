@@ -3,7 +3,7 @@ package com.witt.dimensionscout.presentation.characters
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.data.remote.dto.RMResponse
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

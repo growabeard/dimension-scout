@@ -1,7 +1,7 @@
 package com.witt.dimensionscout.presentation.characters
 
 import android.util.Log
-import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.data.remote.dto.RMResponse
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import io.mockk.MockKAnnotations

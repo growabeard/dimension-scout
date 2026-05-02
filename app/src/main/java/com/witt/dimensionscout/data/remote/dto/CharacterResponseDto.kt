@@ -1,21 +1,22 @@
-package com.witt.dimensionscout.data.model
+package com.witt.dimensionscout.data.remote.dto
 
 import android.util.Log
 import kotlinx.serialization.Serializable
 import com.witt.dimensionscout.domain.model.Character
+import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
 @Serializable
-data class CharacterResponse(
-    val info: Info,
-    val results: List<RMCharacter>
+data class CharacterResponseDto(
+    val infoDto: InfoDto,
+    val results: List<CharacterDto>
 )
 
 @Serializable
-data class Info(
+data class InfoDto(
     val count: Int,
     val pages: Int,
     val next: String? = null,
@@ -23,7 +24,7 @@ data class Info(
 )
 
 @Serializable
-data class RMCharacter(
+data class CharacterDto(
     val id: Int,
     val name: String,
     val status: String,
@@ -55,7 +56,7 @@ data class RMCharacter(
 
     private fun buildDisplayDate(): String {
         return try {
-            java.time.OffsetDateTime.parse(created)
+            OffsetDateTime.parse(created)
                 .atZoneSameInstant(ZoneId.systemDefault())
                 .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM))
         } catch (e: Exception) {
