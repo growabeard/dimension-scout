@@ -6,7 +6,7 @@ import com.witt.dimensionscout.domain.repository.CharacterRepository
 class GetCharacterUseCase(
     private val repository: CharacterRepository
 ) {
-    suspend operator fun invoke(query: String): RMResponse {
-        return repository.getCharacters(query)
+    suspend operator fun invoke(query: String, page: Int): RMResponse {
+        return repository.getCharacters(query, page)
     }
 }
