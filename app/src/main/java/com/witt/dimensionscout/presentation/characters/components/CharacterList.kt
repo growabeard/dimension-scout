@@ -24,9 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.witt.dimensionscout.R
-import com.witt.dimensionscout.domain.model.Location
-import com.witt.dimensionscout.domain.model.Origin
-import com.witt.dimensionscout.domain.model.RMCharacter
+import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
 @Composable
@@ -43,33 +41,33 @@ fun CharacterListPopulatedPreview() {
     DimensionScoutTheme {
         CharacterList(
             characters = listOf(
-                RMCharacter(
+                Character(
                     name = "Rick Sanchez",
                     id = 1,
                     status = "Alive",
                     species = "Human",
                     type = "",
                     gender = "Male",
-                    origin = Origin(name = "Earth", url = ""),
-                    location = Location(name = "Earth", url = ""),
+                    origin = "Earth",
                     image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
                     episode = listOf("https://rickandmortyapi.com/api/episode/1"),
                     url = "https://rickandmortyapi.com/api/character/1",
-                    created = "2017-11-04T18:48:46.250Z"
+                    created = "2017-11-04T18:48:46.250Z",
+                    displayDate = "November 4, 2017"
                 ),
-                RMCharacter(
+                Character(
                     name = "Morty Smith",
                     id = 2,
                     status = "Alive",
                     species = "Human",
                     type = "",
                     gender = "Male",
-                    origin = Origin(name = "Earth", url = ""),
-                    location = Location(name = "Earth", url = ""),
+                    origin = "Earth",
                     image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
                     episode = listOf("https://rickandmortyapi.com/api/episode/1"),
                     url = "https://rickandmortyapi.com/api/character/2",
-                    created = "2017-11-04T18:50:21.651Z"
+                    created = "2017-11-04T18:50:21.651Z",
+                    displayDate = "November 4, 2017"
                 )
             ),
             onCharacterClick = {}
@@ -78,7 +76,7 @@ fun CharacterListPopulatedPreview() {
 }
 
 @Composable
-fun CharacterList(characters: List<RMCharacter>, onCharacterClick: (Int) -> Unit) {
+fun CharacterList(characters: List<Character>, onCharacterClick: (Int) -> Unit) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2),
@@ -93,7 +91,7 @@ fun CharacterList(characters: List<RMCharacter>, onCharacterClick: (Int) -> Unit
 }
 
 @Composable
-fun CharacterCard(character: RMCharacter, onCharacterClick: () -> Unit) {
+fun CharacterCard(character: Character, onCharacterClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(8.dp)

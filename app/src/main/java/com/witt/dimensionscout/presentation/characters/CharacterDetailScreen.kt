@@ -30,9 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.witt.dimensionscout.R
-import com.witt.dimensionscout.domain.model.Location
-import com.witt.dimensionscout.domain.model.Origin
-import com.witt.dimensionscout.domain.model.RMCharacter
+import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
 @Preview(showSystemUi = true)
@@ -40,19 +38,19 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 fun CharacterDetailPreview() {
     DimensionScoutTheme {
         CharacterDetailScreen(
-            RMCharacter(
+            Character(
                 name = "Rick Sanchez",
                 id = 1,
                 status = "Alive",
                 species = "Human",
                 type = "",
                 gender = "Male",
-                origin = Origin(name = "Earth", url = ""),
-                location = Location(name = "Earth", url = ""),
                 image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
                 episode = listOf("https://rickandmortyapi.com/api/episode/1"),
                 url = "https://rickandmortyapi.com/api/character/1",
-                created = "2017-11-04T18:48:46.250Z"
+                created = "2017-11-04T18:48:46.250Z",
+                origin = "Earth",
+                displayDate = "November 4, 2017"
             ),
             {}
         )
@@ -61,7 +59,7 @@ fun CharacterDetailPreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterDetailScreen(character: RMCharacter, onCloseButtonClick: () -> Unit) {
+fun CharacterDetailScreen(character: Character, onCloseButtonClick: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -110,13 +108,13 @@ fun CharacterDetailScreen(character: RMCharacter, onCloseButtonClick: () -> Unit
 
                 DetailItem(label = "Species", value = character.species)
                 DetailItem(label = "Status", value = character.status)
-                DetailItem(label = "Origin", value = character.origin.name)
+                DetailItem(label = "Origin", value = character.origin)
 
                 if (character.type.isNotEmpty()) {
                     DetailItem(label = "Type", value = character.type)
                 }
 
-                DetailItem(label = "Created", value = character.getDisplayDate())
+                DetailItem(label = "Created", value = character.displayDate)
 
                 Spacer(modifier = Modifier.height(24.dp))
             }

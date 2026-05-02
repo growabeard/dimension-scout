@@ -5,9 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.witt.dimensionscout.domain.model.Location
-import com.witt.dimensionscout.domain.model.Origin
-import com.witt.dimensionscout.domain.model.RMCharacter
+import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
@@ -21,33 +19,33 @@ fun CharacterSearchSearchWithResultsPreview() {
         CharacterSearchScreen(
             uiState = CharacterSearchState(
                 characters = listOf(
-                    RMCharacter(
+                    Character(
                         name = "Rick Sanchez",
                         id = 1,
                         status = "Alive",
                         species = "Human",
                         type = "",
                         gender = "Male",
-                        origin = Origin(name = "Earth", url = ""),
-                        location = Location(name = "Earth", url = ""),
+                        origin = "Earth",
                         image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
                         episode = listOf("https://rickandmortyapi.com/api/episode/1"),
                         url = "https://rickandmortyapi.com/api/character/1",
-                        created = "2017-11-04T18:48:46.250Z"
+                        created = "2017-11-04T18:48:46.250Z",
+                        displayDate = "November 4, 2017"
                     ),
-                    RMCharacter(
+                    Character(
                         name = "Morty Smith",
                         id = 2,
                         status = "Alive",
                         species = "Human",
                         type = "",
                         gender = "Male",
-                        origin = Origin(name = "Earth", url = ""),
-                        location = Location(name = "Earth", url = ""),
+                        origin = "Earth",
                         image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
                         episode = listOf("https://rickandmortyapi.com/api/episode/1"),
                         url = "https://rickandmortyapi.com/api/character/2",
-                        created = "2017-11-04T18:50:21.651Z"
+                        created = "2017-11-04T18:50:21.651Z",
+                        displayDate = "November 4, 2017"
                     )
                 ),
             ),

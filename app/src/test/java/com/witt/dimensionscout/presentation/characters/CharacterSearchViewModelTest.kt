@@ -1,12 +1,8 @@
 package com.witt.dimensionscout.presentation.characters
 
 import android.util.Log
-import com.witt.dimensionscout.domain.model.CharacterResponse
-import com.witt.dimensionscout.domain.model.Info
-import com.witt.dimensionscout.domain.model.Location
-import com.witt.dimensionscout.domain.model.Origin
-import com.witt.dimensionscout.domain.model.RMCharacter
-import com.witt.dimensionscout.domain.model.RMResponse
+import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -31,6 +27,37 @@ class CharacterSearchViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val characterList = listOf(
+        Character(
+            name = "Rick Sanchez",
+            id = 1,
+            status = "Alive",
+            species = "Human",
+            type = "",
+            gender = "Male",
+            origin = "Earth",
+            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+            url = "https://rickandmortyapi.com/api/character/1",
+            created = "2017-11-04T18:48:46.250Z",
+            displayDate = "November 4, 2017"
+        ),
+        Character(
+            name = "Morty Smith",
+            id = 2,
+            status = "Alive",
+            species = "Human",
+            type = "",
+            gender = "Male",
+            origin = "Earth",
+            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+            url = "https://rickandmortyapi.com/api/character/2",
+            created = "2017-11-04T18:50:21.651Z",
+            displayDate = "November 4, 2017"
+        )
+    )
+
     @RelaxedMockK
     private lateinit var useCase: GetCharacterUseCase
 
@@ -50,44 +77,7 @@ class CharacterSearchViewModelTest {
     fun `ensure getCharacters() calls useCase`() = runTest(testDispatcher) {
         coEvery { useCase.invoke(any()) }.returns(
             RMResponse.Success(
-                data = CharacterResponse(
-                    info = Info(
-                        count = 2,
-                        pages = 1,
-                        next = null,
-                        prev = null
-                    ),
-                    results = listOf(
-                        RMCharacter(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = Origin(name = "Earth", url = ""),
-                            location = Location(name = "Earth", url = ""),
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z"
-                        ),
-                        RMCharacter(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = Origin(name = "Earth", url = ""),
-                            location = Location(name = "Earth", url = ""),
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z"
-                        )
-                    )
-                )
+                data = characterList
             )
         )
 
@@ -139,47 +129,10 @@ class CharacterSearchViewModelTest {
     }
 
     @Test
-    fun `ensure calling onCharacterClick() sets selectedCharacter in state after getting characters`() = runTest {
+    fun `ensure onCharacterClick() returns character id`() = runTest {
         coEvery { useCase.invoke(any()) }.returns(
             RMResponse.Success(
-                data = CharacterResponse(
-                    info = Info(
-                        count = 2,
-                        pages = 1,
-                        next = null,
-                        prev = null
-                    ),
-                    results = listOf(
-                        RMCharacter(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = Origin(name = "Earth", url = ""),
-                            location = Location(name = "Earth", url = ""),
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z"
-                        ),
-                        RMCharacter(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = Origin(name = "Earth", url = ""),
-                            location = Location(name = "Earth", url = ""),
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z"
-                        )
-                    )
-                )
+                data = characterList
             )
         )
 
@@ -187,9 +140,9 @@ class CharacterSearchViewModelTest {
 
         advanceUntilIdle()
 
-        viewModel.onCharacterClick(1)
+        val characterId = viewModel.onCharacterClick(0)
 
-        assertEquals("Morty Smith", viewModel.state.value.selectedCharacter?.name)
+        assertEquals(1, characterId)
     }
 
 }

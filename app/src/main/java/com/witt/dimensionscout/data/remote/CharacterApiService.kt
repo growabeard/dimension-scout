@@ -1,6 +1,6 @@
 package com.witt.dimensionscout.data.remote
 
-import com.witt.dimensionscout.domain.model.CharacterResponse
+import com.witt.dimensionscout.data.model.CharacterResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
