@@ -4,6 +4,8 @@ import com.witt.dimensionscout.domain.model.Character
 
 data class CharacterSearchState(
     val characters: List<Character> = emptyList(),
+    val currentPage: Int = 0,
+    val canLoadMore: Boolean = true,
     val query: String = "",
     val isLoading: Boolean = false,
     val hasSearched: Boolean = false,
