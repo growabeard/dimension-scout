@@ -146,8 +146,16 @@ class CharacterSearchViewModelTest {
     }
 
     @Test
-    fun `ensure onSearch() calls getCharacters()`() {
+    fun `ensure onSearch() calls getCharacters()`() = runTest {
+        coEvery { useCase.invoke(any()) }.returns(
+            RMResponse.Success(
+                data = characterList
+            )
+        )
+
         viewModel.onSearch()
+
+        advanceUntilIdle()
 
         coVerify { useCase.invoke(any()) }
     }
