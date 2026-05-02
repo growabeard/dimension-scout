@@ -145,6 +145,8 @@ fun CharacterSearchScreen(
                 CharacterList(
                     characters = uiState.characters,
                     query = uiState.query,
+                    paginationErrorId = uiState.paginationErrorId,
+                    isPaginationLoading = uiState.isPaginationLoading,
                     onCharacterClick = onCharacterClick,
                     onLoadNextPage = onLoadNextPage
                 )

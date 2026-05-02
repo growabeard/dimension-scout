@@ -8,6 +8,8 @@ data class CharacterSearchState(
     val canLoadMore: Boolean = true,
     val query: String = "",
     val isLoading: Boolean = false,
+    val isPaginationLoading: Boolean = false,
     val hasSearched: Boolean = false,
-    val errorMessageId: Int? = null
+    val errorMessageId: Int? = null,
+    val paginationErrorId: Int? = null
 )

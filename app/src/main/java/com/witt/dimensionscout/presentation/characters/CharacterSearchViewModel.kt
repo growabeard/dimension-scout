@@ -67,29 +67,29 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
                         characters = response.data,
                         currentPage = 1,
                         errorMessageId = null,
+                        isLoading = false,
                         canLoadMore = response.hasNextPage
                     )
                 }
             }
 
             is RMResponse.Error -> {
-                _state.update { it.copy(errorMessageId = response.messageId) }
+                _state.update { it.copy(errorMessageId = response.messageId,
+                    isLoading = false) }
             }
         }
-
-        _state.update { it.copy(isLoading = false) }
     }
 
     fun loadNextPage() {
         Log.d(TAG, "loadNextPage")
 
-        if (_state.value.isLoading || !_state.value.canLoadMore) {
-            Log.d(TAG, "loadNextPage: already loading because canLoadMore is ${_state.value.canLoadMore} and loading state ${_state.value.isLoading}")
+        if (_state.value.isLoading || _state.value.isPaginationLoading || !_state.value.canLoadMore) {
+            Log.d(TAG, "loadNextPage: already loading or cannot load more")
             return
         }
         viewModelScope.launch {
             val nextPage = state.value.currentPage + 1
-            _state.update { it.copy(isLoading = true) }
+            _state.update { it.copy(isPaginationLoading = true) }
 
             when (val response = useCase.invoke(state.value.query, nextPage)) {
                 is RMResponse.Success -> {
@@ -98,16 +98,22 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
                             characters = it.characters + response.data,
                             currentPage = nextPage,
                             canLoadMore = response.hasNextPage,
-                            errorMessageId = null
+                            isPaginationLoading = false,
+                            errorMessageId = null,
+                            paginationErrorId = null
                         )
                     }
                 }
 
                 is RMResponse.Error -> {
-                    _state.update { it.copy(errorMessageId = response.messageId) }
+                    _state.update {
+                        it.copy(
+                            paginationErrorId = response.messageId,
+                            isPaginationLoading = false
+                        )
+                    }
                 }
             }
-            _state.update { it.copy(isLoading = false) }
         }
     }
 

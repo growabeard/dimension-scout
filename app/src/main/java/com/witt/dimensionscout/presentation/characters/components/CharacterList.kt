@@ -1,22 +1,31 @@
 package com.witt.dimensionscout.presentation.characters.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -39,7 +48,9 @@ fun CharacterListEmptyPreview() {
             characters = emptyList(),
             query = "",
             onCharacterClick = {},
-            onLoadNextPage = {}
+            onLoadNextPage = {},
+            paginationErrorId = null,
+            isPaginationLoading = false
         )
     }
 }
@@ -81,15 +92,108 @@ fun CharacterListPopulatedPreview() {
             ),
             query = "",
             onCharacterClick = {},
-            onLoadNextPage = {}
+            onLoadNextPage = {},
+            paginationErrorId = null,
+            isPaginationLoading = false
         )
     }
 }
 
 @Composable
+@Preview
+fun CharacterListPopulatedErrorPreview() {
+    DimensionScoutTheme {
+        CharacterList(
+            characters = listOf(
+                Character(
+                    name = "Rick Sanchez",
+                    id = 1,
+                    status = "Alive",
+                    species = "Human",
+                    type = "",
+                    gender = "Male",
+                    origin = "Earth",
+                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                    url = "https://rickandmortyapi.com/api/character/1",
+                    created = "2017-11-04T18:48:46.250Z",
+                    displayDate = "November 4, 2017"
+                ),
+                Character(
+                    name = "Morty Smith",
+                    id = 2,
+                    status = "Alive",
+                    species = "Human",
+                    type = "",
+                    gender = "Male",
+                    origin = "Earth",
+                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                    url = "https://rickandmortyapi.com/api/character/2",
+                    created = "2017-11-04T18:50:21.651Z",
+                    displayDate = "November 4, 2017"
+                )
+            ),
+            query = "",
+            onCharacterClick = {},
+            onLoadNextPage = {},
+            paginationErrorId = R.string.error_http_400,
+            isPaginationLoading = false
+        )
+    }
+}
+
+@Preview
+@Composable
+fun CharacterListPopulatedLoadingPreview() {
+    DimensionScoutTheme {
+        CharacterList(
+            characters = listOf(
+                Character(
+                    name = "Rick Sanchez",
+                    id = 1,
+                    status = "Alive",
+                    species = "Human",
+                    type = "",
+                    gender = "Male",
+                    origin = "Earth",
+                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                    url = "https://rickandmortyapi.com/api/character/1",
+                    created = "2017-11-04T18:48:46.250Z",
+                    displayDate = "November 4, 2017"
+                ),
+                Character(
+                    name = "Morty Smith",
+                    id = 2,
+                    status = "Alive",
+                    species = "Human",
+                    type = "",
+                    gender = "Male",
+                    origin = "Earth",
+                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                    url = "https://rickandmortyapi.com/api/character/2",
+                    created = "2017-11-04T18:50:21.651Z",
+                    displayDate = "November 4, 2017"
+                )
+            ),
+            query = "",
+            onCharacterClick = {},
+            onLoadNextPage = {},
+            paginationErrorId = null,
+            isPaginationLoading = true
+        )
+    }
+}
+
+
+@Composable
 fun CharacterList(
     characters: List<Character>,
     query: String,
+    paginationErrorId: Int?,
+    isPaginationLoading: Boolean,
     onCharacterClick: (Int) -> Unit,
     onLoadNextPage: () -> Unit
 ) {
@@ -104,7 +208,7 @@ fun CharacterList(
     val shouldLoadMore = remember {
         derivedStateOf {
             val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
-            lastVisibleItem != null && lastVisibleItem.index >= characters.size - 5
+            lastVisibleItem != null && lastVisibleItem.index >= characters.size - 6
         }
     }
 
@@ -127,6 +231,53 @@ fun CharacterList(
                 character = characters[index],
                 onCharacterClick = { onCharacterClick(index) }
             )
+        }
+
+        if (paginationErrorId != null) {
+            item(span = { GridItemSpan(2) }) {
+                PaginationErrorItem(
+                    message = stringResource(paginationErrorId),
+                    onRetry = onLoadNextPage
+                )
+            }
+        } else if (isPaginationLoading) {
+            item(span = { GridItemSpan(2) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun PaginationErrorItem(
+    message: String,
+    onRetry: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier.weight(1f)
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        Button(onClick = onRetry) {
+            Text(text = stringResource(R.string.retry))
         }
     }
 }
