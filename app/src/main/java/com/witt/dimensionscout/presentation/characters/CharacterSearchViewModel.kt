@@ -60,9 +60,16 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
         Log.d(TAG, "getCharacters with query: ${_state.value.query}")
         _state.update { it.copy(isLoading = true, hasSearched = true) }
 
-        when (val response = useCase.invoke(_state.value.query)) {
+        when (val response = useCase.invoke(_state.value.query, 1)) {
             is RMResponse.Success -> {
-                _state.update { it.copy(characters = response.data, errorMessageId = null) }
+                _state.update {
+                    it.copy(
+                        characters = response.data,
+                        currentPage = 1,
+                        errorMessageId = null,
+                        canLoadMore = response.hasNextPage
+                    )
+                }
             }
 
             is RMResponse.Error -> {
@@ -72,7 +79,38 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
 
         _state.update { it.copy(isLoading = false) }
     }
-    
+
+    fun loadNextPage() {
+        Log.d(TAG, "loadNextPage")
+
+        if (_state.value.isLoading || !_state.value.canLoadMore) {
+            Log.d(TAG, "loadNextPage: already loading because canLoadMore is ${_state.value.canLoadMore} and loading state ${_state.value.isLoading}")
+            return
+        }
+        viewModelScope.launch {
+            val nextPage = state.value.currentPage + 1
+            _state.update { it.copy(isLoading = true) }
+
+            when (val response = useCase.invoke(state.value.query, nextPage)) {
+                is RMResponse.Success -> {
+                    _state.update {
+                        it.copy(
+                            characters = it.characters + response.data,
+                            currentPage = nextPage,
+                            canLoadMore = response.hasNextPage,
+                            errorMessageId = null
+                        )
+                    }
+                }
+
+                is RMResponse.Error -> {
+                    _state.update { it.copy(errorMessageId = response.messageId) }
+                }
+            }
+            _state.update { it.copy(isLoading = false) }
+        }
+    }
+
     fun onSearch() {
         Log.d(TAG, "onSearch triggered manually")
         searchJob?.cancel()
