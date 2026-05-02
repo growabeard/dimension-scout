@@ -3,10 +3,8 @@ package com.witt.dimensionscout.presentation.characters
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.witt.dimensionscout.domain.model.Location
 import com.witt.dimensionscout.domain.model.Origin
 import com.witt.dimensionscout.domain.model.RMCharacter
@@ -15,7 +13,6 @@ import com.witt.dimensionscout.presentation.characters.components.CharacterSearc
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
 import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
-import org.koin.androidx.compose.koinViewModel
 
 @Preview(showSystemUi = true)
 @Composable
@@ -112,24 +109,6 @@ fun CharacterSearchSearchErrorPreview() {
             onQueryChange = {}
         )
     }
-}
-
-@Composable
-fun CharacterSearchRoute(
-    modifier: Modifier = Modifier,
-    viewModel: CharacterSearchViewModel = koinViewModel()
-) {
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
-
-    CharacterSearchScreen(
-        uiState = uiState,
-        showClearButton = viewModel.showClearButton,
-        onQueryChange = viewModel::onQueryChange,
-        onSearch = viewModel::getCharacters,
-        onClearInputClick = viewModel::clearInput,
-        onCharacterClick = viewModel::onCharacterClick,
-        modifier = modifier
-    )
 }
 
 @Composable
