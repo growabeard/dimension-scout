@@ -143,7 +143,8 @@ fun CharacterSearchScreen(
 
             uiState.characters.isNotEmpty() -> {
                 CharacterList(
-                    uiState.characters,
+                    characters = uiState.characters,
+                    query = uiState.query,
                     onCharacterClick = onCharacterClick,
                     onLoadNextPage = onLoadNextPage
                 )

@@ -7,12 +7,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -31,7 +35,12 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 @Preview
 fun CharacterListEmptyPreview() {
     DimensionScoutTheme {
-        CharacterList(characters = emptyList(), onCharacterClick = {})
+        CharacterList(
+            characters = emptyList(),
+            query = "",
+            onCharacterClick = {},
+            onLoadNextPage = {}
+        )
     }
 }
 
@@ -70,28 +79,63 @@ fun CharacterListPopulatedPreview() {
                     displayDate = "November 4, 2017"
                 )
             ),
-            onCharacterClick = {}
+            query = "",
+            onCharacterClick = {},
+            onLoadNextPage = {}
         )
     }
 }
 
 @Composable
-fun CharacterList(characters: List<Character>, onCharacterClick: (Int) -> Unit) {
+fun CharacterList(
+    characters: List<Character>,
+    query: String,
+    onCharacterClick: (Int) -> Unit,
+    onLoadNextPage: () -> Unit
+) {
+    val listState = rememberLazyGridState()
+
+    LaunchedEffect(query) {
+        if (characters.isNotEmpty()) {
+            listState.scrollToItem(0)
+        }
+    }
+
+    val shouldLoadMore = remember {
+        derivedStateOf {
+            val lastVisibleItem = listState.layoutInfo.visibleItemsInfo.lastOrNull()
+            lastVisibleItem != null && lastVisibleItem.index >= characters.size - 5
+        }
+    }
+
+    LaunchedEffect(shouldLoadMore.value) {
+        if (shouldLoadMore.value) {
+            onLoadNextPage()
+        }
+    }
+
     LazyVerticalGrid(
         modifier = Modifier.fillMaxWidth(),
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp)
+        contentPadding = PaddingValues(8.dp),
+        state = listState
     ) {
         items(characters.size, key = { index ->
             characters[index].id
         }) { index ->
-            CharacterCard(characters[index], onCharacterClick = { onCharacterClick(index) })
+            CharacterCard(
+                character = characters[index],
+                onCharacterClick = { onCharacterClick(index) }
+            )
         }
     }
 }
 
 @Composable
-fun CharacterCard(character: Character, onCharacterClick: () -> Unit) {
+fun CharacterCard(
+    character: Character,
+    onCharacterClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(8.dp)
