@@ -3,7 +3,7 @@ package com.witt.dimensionscout.presentation.characters
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.witt.dimensionscout.domain.model.RMResponse
+import com.witt.dimensionscout.data.model.RMResponse
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,7 +42,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
             _state.update { it.copy(isLoading = true, hasSearched = true) }
             when (val response = useCase.invoke(_state.value.query)) {
                 is RMResponse.Success -> {
-                    _state.update { it.copy(characters = response.data.results, error = null) }
+                    _state.update { it.copy(characters = response.data, error = null) }
                 }
 
                 is RMResponse.Error -> {

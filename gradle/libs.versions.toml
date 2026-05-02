@@ -16,7 +16,7 @@ mockk = "1.14.9"
 coil = "2.7.0"
 navigationCompose = "2.9.8"
 desugar_jdk_libs = "2.1.5"
-kotlinxSerializationJson = "1.8.0"
+kotlinxSerializationJson = "1.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }

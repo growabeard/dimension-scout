@@ -32,7 +32,13 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 @Composable
 fun CharacterCharacterSearchBarEmptyQueryPreview() {
     DimensionScoutTheme {
-        CharacterSearchBar("", {}, false, false, {}, { })
+        CharacterSearchBar(
+            query = "",
+            onQueryChange = {},
+            loading = false,
+            showClearButton = false,
+            onClearInputClick = {},
+            onSearch = { })
     }
 }
 
@@ -40,7 +46,13 @@ fun CharacterCharacterSearchBarEmptyQueryPreview() {
 @Composable
 fun CharacterCharacterSearchBarPopulatedQueryPreview() {
     DimensionScoutTheme {
-        CharacterSearchBar("Rick", {}, false, true, {}, { })
+        CharacterSearchBar(
+            query = "Rick",
+            onQueryChange = {},
+            loading = false,
+            showClearButton = true,
+            onClearInputClick = {},
+            onSearch = { })
     }
 }
 
@@ -48,7 +60,13 @@ fun CharacterCharacterSearchBarPopulatedQueryPreview() {
 @Composable
 fun CharacterCharacterSearchBarLoadingQueryPreview() {
     DimensionScoutTheme {
-        CharacterSearchBar("Rick", {}, true, true, {}, { })
+        CharacterSearchBar(
+            query = "Rick",
+            onQueryChange = {},
+            loading = true,
+            showClearButton = true,
+            onClearInputClick = {},
+            onSearch = { })
     }
 }
 
