@@ -1,7 +1,8 @@
 package com.witt.dimensionscout.presentation.characters
 
 import android.util.Log
-import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.R
+import com.witt.dimensionscout.data.remote.dto.RMResponse
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import io.mockk.MockKAnnotations
@@ -81,7 +82,7 @@ class CharacterSearchViewModelTest {
             )
         )
 
-        viewModel.getCharacters()
+        viewModel.onQueryChange("Rick")
 
         advanceUntilIdle()
 
@@ -93,15 +94,14 @@ class CharacterSearchViewModelTest {
     @Test
     fun `ensure getCharacters() sets error in state if useCase returns error`() =
         runTest(testDispatcher) {
-            val errorMessage = "Fake error"
-            coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(errorMessage))
+            coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(R.string.error_generic_exception))
 
-            viewModel.getCharacters()
+            viewModel.onQueryChange("Morty")
 
             advanceUntilIdle()
 
             coVerify { useCase.invoke(any()) }
-            assertEquals(errorMessage, viewModel.state.value.error)
+            assertEquals(R.string.error_generic_exception, viewModel.state.value.errorMessageId)
             assertEquals(false, viewModel.state.value.isLoading)
         }
 
@@ -136,13 +136,28 @@ class CharacterSearchViewModelTest {
             )
         )
 
-        viewModel.getCharacters()
+        viewModel.onQueryChange("Test")
 
         advanceUntilIdle()
 
         val characterId = viewModel.onCharacterClick(0)
 
         assertEquals(1, characterId)
+    }
+
+    @Test
+    fun `ensure onSearch() calls getCharacters()`() = runTest {
+        coEvery { useCase.invoke(any()) }.returns(
+            RMResponse.Success(
+                data = characterList
+            )
+        )
+
+        viewModel.onSearch()
+
+        advanceUntilIdle()
+
+        coVerify { useCase.invoke(any()) }
     }
 
 }

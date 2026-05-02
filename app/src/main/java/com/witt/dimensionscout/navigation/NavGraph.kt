@@ -32,7 +32,7 @@ fun AppNavHost(
                 uiState = uiState,
                 showClearButton = viewModel.showClearButton,
                 onQueryChange = viewModel::onQueryChange,
-                onSearch = viewModel::getCharacters,
+                onSearch = viewModel::onSearch,
                 onClearInputClick = viewModel::clearInput,
                 onCharacterClick = { index ->
                     val characterId = viewModel.onCharacterClick(index)

@@ -1,8 +1,9 @@
 package com.witt.dimensionscout.data.repository
 
 import android.util.Log
+import com.witt.dimensionscout.R
 import com.witt.dimensionscout.data.remote.CharacterApiService
-import com.witt.dimensionscout.data.model.RMResponse
+import com.witt.dimensionscout.data.remote.dto.RMResponse
 import com.witt.dimensionscout.domain.repository.CharacterRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,17 +19,17 @@ class CharacterRepositoryImpl(private val apiService: CharacterApiService) : Cha
             RMResponse.Success(data = dto.results.map { it.toDomain() })
         } catch (e: IOException) {
             Log.e(TAG, "IOException calling getCharacters: ${e.message}")
-            RMResponse.Error("Please check your internet connection and try again.")
+            RMResponse.Error(R.string.error_io_exception)
         } catch (e: HttpException) {
             Log.e(TAG, "HttpException calling getCharacters with code ${e.code()}: ${e.message}")
             when (e.code()) {
                 HTTP_NOT_FOUND -> RMResponse.Success(emptyList())
-                HTTP_BAD_REQUEST -> RMResponse.Error("Invalid request, please try again later with different criteria.")
-                else -> RMResponse.Error("An error occurred, please try again later.")
+                HTTP_BAD_REQUEST -> RMResponse.Error(R.string.error_http_400)
+                else -> RMResponse.Error(R.string.error_http_exception)
             }
         } catch (e: Exception) {
             Log.e(TAG, "Exception calling getCharacters: ${e.message}")
-            RMResponse.Error("An error occurred, please try again later.")
+            RMResponse.Error(R.string.error_generic_exception)
         }
     }
 

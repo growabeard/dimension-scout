@@ -2,9 +2,10 @@ package com.witt.dimensionscout.presentation.characters
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
@@ -98,7 +99,7 @@ fun CharacterSearchSearchErrorPreview() {
         CharacterSearchScreen(
             uiState = CharacterSearchState(
                 query = "Rick",
-                error = "Fake error",
+                errorMessageId = R.string.error_generic_exception,
             ),
             showClearButton = true,
             onClearInputClick = {},
@@ -120,12 +121,6 @@ fun CharacterSearchScreen(
     onClearInputClick: () -> Unit
 ) {
 
-    LaunchedEffect(uiState.query) {
-        if (!uiState.hasSearched) {
-            onSearch()
-        }
-    }
-
     Column(modifier = modifier) {
         CharacterSearchBar(
             uiState.query,
@@ -137,8 +132,8 @@ fun CharacterSearchScreen(
         )
 
         when {
-            uiState.error != null -> {
-                ErrorComponent(message = uiState.error)
+            uiState.errorMessageId != null -> {
+                ErrorComponent(message = stringResource( uiState.errorMessageId))
             }
 
             uiState.characters.isNotEmpty() -> {
