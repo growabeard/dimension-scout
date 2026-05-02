@@ -82,7 +82,7 @@ class CharacterSearchViewModelTest {
             )
         )
 
-        viewModel.getCharacters()
+        viewModel.onQueryChange("Rick")
 
         advanceUntilIdle()
 
@@ -96,7 +96,7 @@ class CharacterSearchViewModelTest {
         runTest(testDispatcher) {
             coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(R.string.error_generic_exception))
 
-            viewModel.getCharacters()
+            viewModel.onQueryChange("Morty")
 
             advanceUntilIdle()
 
@@ -136,13 +136,20 @@ class CharacterSearchViewModelTest {
             )
         )
 
-        viewModel.getCharacters()
+        viewModel.onQueryChange("Test")
 
         advanceUntilIdle()
 
         val characterId = viewModel.onCharacterClick(0)
 
         assertEquals(1, characterId)
+    }
+
+    @Test
+    fun `ensure onSearch() calls getCharacters()`() {
+        viewModel.onSearch()
+
+        coVerify { useCase.invoke(any()) }
     }
 
 }

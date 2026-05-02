@@ -121,12 +121,6 @@ fun CharacterSearchScreen(
     onClearInputClick: () -> Unit
 ) {
 
-    LaunchedEffect(uiState.query) {
-        if (!uiState.hasSearched) {
-            onSearch()
-        }
-    }
-
     Column(modifier = modifier) {
         CharacterSearchBar(
             uiState.query,
