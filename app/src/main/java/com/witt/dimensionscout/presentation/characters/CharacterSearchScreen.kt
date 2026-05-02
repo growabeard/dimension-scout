@@ -1,6 +1,7 @@
 package com.witt.dimensionscout.presentation.characters
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -126,11 +127,11 @@ fun CharacterSearchScreen(
     onClearInputClick: () -> Unit
 ) {
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
         CharacterSearchBar(
             uiState.query,
             onQueryChange,
-            uiState.isLoading,
+            uiState.isLoading || uiState.isPaginationLoading,
             showClearButton,
             onClearInputClick,
             onSearch
@@ -138,11 +139,15 @@ fun CharacterSearchScreen(
 
         when {
             uiState.errorMessageId != null -> {
-                ErrorComponent(message = stringResource(uiState.errorMessageId))
+                ErrorComponent(
+                    message = stringResource(uiState.errorMessageId),
+                    modifier = Modifier.weight(1f)
+                )
             }
 
             uiState.characters.isNotEmpty() -> {
                 CharacterList(
+                    modifier = Modifier.weight(1f),
                     characters = uiState.characters,
                     query = uiState.query,
                     paginationErrorId = uiState.paginationErrorId,
@@ -153,7 +158,7 @@ fun CharacterSearchScreen(
             }
 
             !uiState.isLoading && uiState.hasSearched -> {
-                EmptyResultsComponent()
+                EmptyResultsComponent(modifier = Modifier.weight(1f))
             }
         }
     }

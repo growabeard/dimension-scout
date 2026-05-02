@@ -23,9 +23,12 @@ import com.witt.dimensionscout.R
 
 
 @Composable
-fun ErrorComponent(message: String) {
+fun ErrorComponent(
+    message: String,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -46,9 +49,11 @@ fun ErrorComponent(message: String) {
 }
 
 @Composable
-fun EmptyResultsComponent() {
+fun EmptyResultsComponent(
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

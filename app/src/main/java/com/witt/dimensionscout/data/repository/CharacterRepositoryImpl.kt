@@ -33,6 +33,7 @@ class CharacterRepositoryImpl(private val apiService: CharacterApiService) : Cha
                 when (e.code()) {
                     HTTP_NOT_FOUND -> RMResponse.Success(emptyList(), hasNextPage = false)
                     HTTP_BAD_REQUEST -> RMResponse.Error(R.string.error_http_400)
+                    429 -> RMResponse.Error(R.string.error_http_429)
                     else -> RMResponse.Error(R.string.error_http_exception)
                 }
             } catch (e: Exception) {

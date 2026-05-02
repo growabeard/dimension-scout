@@ -34,7 +34,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(300L)
+            delay(500L)
             getCharacters()
         }
     }
@@ -62,6 +62,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
 
         when (val response = useCase.invoke(_state.value.query, 1)) {
             is RMResponse.Success -> {
+                Log.d(TAG, "getCharacters: success")
                 _state.update {
                     it.copy(
                         characters = response.data,
@@ -74,6 +75,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
             }
 
             is RMResponse.Error -> {
+                Log.d(TAG, "getCharacters: error")
                 _state.update { it.copy(errorMessageId = response.messageId,
                     isLoading = false) }
             }
@@ -93,6 +95,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
 
             when (val response = useCase.invoke(state.value.query, nextPage)) {
                 is RMResponse.Success -> {
+                    Log.d(TAG, "loadNextPage: success")
                     _state.update {
                         it.copy(
                             characters = it.characters + response.data,
@@ -106,6 +109,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
                 }
 
                 is RMResponse.Error -> {
+                    Log.d(TAG, "loadNextPage: error")
                     _state.update {
                         it.copy(
                             paginationErrorId = response.messageId,
