@@ -53,6 +53,7 @@ fun CharacterSearchSearchWithResultsPreview() {
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -68,6 +69,7 @@ fun CharacterSearchSearchEmptyPreview() {
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -86,6 +88,7 @@ fun CharacterSearchSearchLoadingPreview() {
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -104,6 +107,7 @@ fun CharacterSearchSearchErrorPreview() {
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -116,6 +120,7 @@ fun CharacterSearchScreen(
     uiState: CharacterSearchState,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
+    onLoadNextPage: () -> Unit,
     onCharacterClick: (Int) -> Unit,
     showClearButton: Boolean = false,
     onClearInputClick: () -> Unit
@@ -133,11 +138,15 @@ fun CharacterSearchScreen(
 
         when {
             uiState.errorMessageId != null -> {
-                ErrorComponent(message = stringResource( uiState.errorMessageId))
+                ErrorComponent(message = stringResource(uiState.errorMessageId))
             }
 
             uiState.characters.isNotEmpty() -> {
-                CharacterList(uiState.characters, onCharacterClick = onCharacterClick)
+                CharacterList(
+                    uiState.characters,
+                    onCharacterClick = onCharacterClick,
+                    onLoadNextPage = onLoadNextPage
+                )
             }
 
             !uiState.isLoading && uiState.hasSearched -> {
