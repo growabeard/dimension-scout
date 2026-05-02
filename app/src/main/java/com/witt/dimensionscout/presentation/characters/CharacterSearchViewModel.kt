@@ -42,11 +42,11 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
             _state.update { it.copy(isLoading = true, hasSearched = true) }
             when (val response = useCase.invoke(_state.value.query)) {
                 is RMResponse.Success -> {
-                    _state.update { it.copy(characters = response.data, error = null) }
+                    _state.update { it.copy(characters = response.data, errorMessageId = null) }
                 }
 
                 is RMResponse.Error -> {
-                    _state.update { it.copy(error = response.message) }
+                    _state.update { it.copy(errorMessageId = response.messageId) }
                 }
             }
             _state.update { it.copy(isLoading = false) }
