@@ -1,5 +1,10 @@
 package com.witt.dimensionscout.presentation.characters
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -18,46 +23,52 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 @Composable
 fun CharacterSearchSearchWithResultsPreview() {
     DimensionScoutTheme {
-        CharacterSearchScreen(
-            uiState = CharacterSearchState(
-                characters = listOf(
-                    Character(
-                        name = "Rick Sanchez",
-                        id = 1,
-                        status = "Alive",
-                        species = "Human",
-                        type = "",
-                        gender = "Male",
-                        origin = "Earth",
-                        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                        url = "https://rickandmortyapi.com/api/character/1",
-                        created = "2017-11-04T18:48:46.250Z",
-                        displayDate = "November 4, 2017"
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(
+                        characters = listOf(
+                            Character(
+                                name = "Rick Sanchez",
+                                id = 1,
+                                status = "Alive",
+                                species = "Human",
+                                type = "",
+                                gender = "Male",
+                                origin = "Earth",
+                                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                                episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                                url = "https://rickandmortyapi.com/api/character/1",
+                                created = "2017-11-04T18:48:46.250Z",
+                                displayDate = "November 4, 2017"
+                            ),
+                            Character(
+                                name = "Morty Smith",
+                                id = 2,
+                                status = "Alive",
+                                species = "Human",
+                                type = "",
+                                gender = "Male",
+                                origin = "Earth",
+                                image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                                episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                                url = "https://rickandmortyapi.com/api/character/2",
+                                created = "2017-11-04T18:50:21.651Z",
+                                displayDate = "November 4, 2017"
+                            )
+                        ),
                     ),
-                    Character(
-                        name = "Morty Smith",
-                        id = 2,
-                        status = "Alive",
-                        species = "Human",
-                        type = "",
-                        gender = "Male",
-                        origin = "Earth",
-                        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                        url = "https://rickandmortyapi.com/api/character/2",
-                        created = "2017-11-04T18:50:21.651Z",
-                        displayDate = "November 4, 2017"
-                    )
-                ),
-            ),
-            showClearButton = false,
-            onClearInputClick = {},
-            onSearch = {},
-            onLoadNextPage = {},
-            onCharacterClick = {},
-            onQueryChange = {}
-        )
+                    showClearButton = false,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
@@ -65,15 +76,21 @@ fun CharacterSearchSearchWithResultsPreview() {
 @Composable
 fun CharacterSearchSearchEmptyPreview() {
     DimensionScoutTheme {
-        CharacterSearchScreen(
-            uiState = CharacterSearchState(),
-            showClearButton = false,
-            onClearInputClick = {},
-            onSearch = {},
-            onLoadNextPage = {},
-            onCharacterClick = {},
-            onQueryChange = {}
-        )
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(),
+                    showClearButton = false,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
@@ -81,18 +98,24 @@ fun CharacterSearchSearchEmptyPreview() {
 @Composable
 fun CharacterSearchSearchLoadingPreview() {
     DimensionScoutTheme {
-        CharacterSearchScreen(
-            uiState = CharacterSearchState(
-                query = "Rick",
-                isLoading = true,
-            ),
-            showClearButton = true,
-            onClearInputClick = {},
-            onSearch = {},
-            onLoadNextPage = {},
-            onCharacterClick = {},
-            onQueryChange = {}
-        )
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(
+                        query = "Rick",
+                        isLoading = true,
+                    ),
+                    showClearButton = true,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
@@ -100,21 +123,28 @@ fun CharacterSearchSearchLoadingPreview() {
 @Composable
 fun CharacterSearchSearchErrorPreview() {
     DimensionScoutTheme {
-        CharacterSearchScreen(
-            uiState = CharacterSearchState(
-                query = "Rick",
-                errorMessageId = R.string.error_generic_exception,
-            ),
-            showClearButton = true,
-            onClearInputClick = {},
-            onSearch = {},
-            onLoadNextPage = {},
-            onCharacterClick = {},
-            onQueryChange = {}
-        )
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(
+                        query = "Rick",
+                        errorMessageId = R.string.error_generic_exception,
+                    ),
+                    showClearButton = true,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CharacterSearchScreen(
     modifier: Modifier = Modifier,
@@ -124,7 +154,9 @@ fun CharacterSearchScreen(
     onLoadNextPage: () -> Unit,
     onCharacterClick: (Int) -> Unit,
     showClearButton: Boolean = false,
-    onClearInputClick: () -> Unit
+    onClearInputClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
 
     Column(modifier = modifier.fillMaxSize()) {
@@ -153,7 +185,9 @@ fun CharacterSearchScreen(
                     paginationErrorId = uiState.paginationErrorId,
                     isPaginationLoading = uiState.isPaginationLoading,
                     onCharacterClick = onCharacterClick,
-                    onLoadNextPage = onLoadNextPage
+                    onLoadNextPage = onLoadNextPage,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedVisibilityScope = animatedVisibilityScope
                 )
             }
 

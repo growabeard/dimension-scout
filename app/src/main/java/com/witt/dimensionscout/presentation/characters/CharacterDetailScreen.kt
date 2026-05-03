@@ -1,5 +1,9 @@
 package com.witt.dimensionscout.presentation.characters
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -37,29 +41,40 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 @Composable
 fun CharacterDetailPreview() {
     DimensionScoutTheme {
-        CharacterDetailScreen(
-            Character(
-                name = "Rick Sanchez",
-                id = 1,
-                status = "Alive",
-                species = "Human",
-                type = "",
-                gender = "Male",
-                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                url = "https://rickandmortyapi.com/api/character/1",
-                created = "2017-11-04T18:48:46.250Z",
-                origin = "Earth",
-                displayDate = "November 4, 2017"
-            ),
-            {}
-        )
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterDetailScreen(
+                    Character(
+                        name = "Rick Sanchez",
+                        id = 1,
+                        status = "Alive",
+                        species = "Human",
+                        type = "",
+                        gender = "Male",
+                        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                        url = "https://rickandmortyapi.com/api/character/1",
+                        created = "2017-11-04T18:48:46.250Z",
+                        origin = "Earth",
+                        displayDate = "November 4, 2017"
+                    ),
+                    {},
+                    this@SharedTransitionLayout,
+                    this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CharacterDetailScreen(character: Character, onCloseButtonClick: () -> Unit) {
+fun CharacterDetailScreen(
+    character: Character,
+    onCloseButtonClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,14 +96,23 @@ fun CharacterDetailScreen(character: Character, onCloseButtonClick: () -> Unit) 
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
-            AsyncImage(
-                model = character.image,
-                contentDescription = stringResource(R.string.image_of_character, character.name),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f),
-                contentScale = ContentScale.Crop
-            )
+            with(sharedTransitionScope) {
+                AsyncImage(
+                    model = character.image,
+                    contentDescription = stringResource(
+                        R.string.image_of_character,
+                        character.name
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .sharedElement(
+                            rememberSharedContentState(key = "image-${character.id}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        ),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
             Column(
                 modifier = Modifier
