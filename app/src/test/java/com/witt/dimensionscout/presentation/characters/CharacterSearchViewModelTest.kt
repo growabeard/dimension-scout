@@ -76,9 +76,10 @@ class CharacterSearchViewModelTest {
 
     @Test
     fun `ensure getCharacters() calls useCase`() = runTest(testDispatcher) {
-        coEvery { useCase.invoke(any()) }.returns(
+        coEvery { useCase.invoke(any(), anyNullable()) }.returns(
             RMResponse.Success(
-                data = characterList
+                data = characterList,
+                hasNextPage = true
             )
         )
 
@@ -86,7 +87,7 @@ class CharacterSearchViewModelTest {
 
         advanceUntilIdle()
 
-        coVerify { useCase.invoke(any()) }
+        coVerify { useCase.invoke(any(), anyNullable()) }
         assertEquals(2, viewModel.state.value.characters.size)
         assertEquals(false, viewModel.state.value.isLoading)
     }
@@ -94,13 +95,18 @@ class CharacterSearchViewModelTest {
     @Test
     fun `ensure getCharacters() sets error in state if useCase returns error`() =
         runTest(testDispatcher) {
-            coEvery { useCase.invoke(any()) }.returns(RMResponse.Error(R.string.error_generic_exception))
+            coEvery {
+                useCase.invoke(
+                    any(),
+                    anyNullable()
+                )
+            }.returns(RMResponse.Error(R.string.error_generic_exception))
 
             viewModel.onQueryChange("Morty")
 
             advanceUntilIdle()
 
-            coVerify { useCase.invoke(any()) }
+            coVerify { useCase.invoke(any(), anyNullable()) }
             assertEquals(R.string.error_generic_exception, viewModel.state.value.errorMessageId)
             assertEquals(false, viewModel.state.value.isLoading)
         }
@@ -130,9 +136,10 @@ class CharacterSearchViewModelTest {
 
     @Test
     fun `ensure onCharacterClick() returns character id`() = runTest {
-        coEvery { useCase.invoke(any()) }.returns(
+        coEvery { useCase.invoke(any(), anyNullable()) }.returns(
             RMResponse.Success(
-                data = characterList
+                data = characterList,
+                hasNextPage = true
             )
         )
 
@@ -147,9 +154,10 @@ class CharacterSearchViewModelTest {
 
     @Test
     fun `ensure onSearch() calls getCharacters()`() = runTest {
-        coEvery { useCase.invoke(any()) }.returns(
+        coEvery { useCase.invoke(any(), anyNullable()) }.returns(
             RMResponse.Success(
-                data = characterList
+                data = characterList,
+                hasNextPage = true
             )
         )
 
@@ -157,7 +165,22 @@ class CharacterSearchViewModelTest {
 
         advanceUntilIdle()
 
-        coVerify { useCase.invoke(any()) }
+        coVerify { useCase.invoke(any(), anyNullable()) }
+    }
+    
+    @Test
+    fun `ensure loadNextPage() calls getCharacters()`() = runTest {
+        coEvery { useCase.invoke(any(), anyNullable()) }.returns(
+            RMResponse.Success(
+                data = characterList,
+                hasNextPage = true
+            )
+        )
+        viewModel.loadNextPage()
+
+        advanceUntilIdle()
+
+        coVerify { useCase.invoke(any(), anyNullable()) }
     }
 
 }

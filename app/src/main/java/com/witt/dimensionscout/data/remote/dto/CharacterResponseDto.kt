@@ -11,8 +11,8 @@ import java.time.format.FormatStyle
 
 @Serializable
 data class CharacterResponseDto(
-    val infoDto: InfoDto,
-    val results: List<CharacterDto>
+    val info: InfoDto?,
+    val results: List<CharacterDto>?
 )
 
 @Serializable

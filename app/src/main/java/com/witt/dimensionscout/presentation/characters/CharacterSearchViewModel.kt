@@ -34,7 +34,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(300L)
+            delay(500L)
             getCharacters()
         }
     }
@@ -60,19 +60,67 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
         Log.d(TAG, "getCharacters with query: ${_state.value.query}")
         _state.update { it.copy(isLoading = true, hasSearched = true) }
 
-        when (val response = useCase.invoke(_state.value.query)) {
+        when (val response = useCase.invoke(_state.value.query, 1)) {
             is RMResponse.Success -> {
-                _state.update { it.copy(characters = response.data, errorMessageId = null) }
+                Log.d(TAG, "getCharacters: success")
+                _state.update {
+                    it.copy(
+                        characters = response.data,
+                        currentPage = 1,
+                        errorMessageId = null,
+                        isLoading = false,
+                        canLoadMore = response.hasNextPage
+                    )
+                }
             }
 
             is RMResponse.Error -> {
-                _state.update { it.copy(errorMessageId = response.messageId) }
+                Log.d(TAG, "getCharacters: error")
+                _state.update { it.copy(errorMessageId = response.messageId,
+                    isLoading = false) }
             }
         }
-
-        _state.update { it.copy(isLoading = false) }
     }
-    
+
+    fun loadNextPage() {
+        Log.d(TAG, "loadNextPage")
+
+        if (_state.value.isLoading || _state.value.isPaginationLoading || !_state.value.canLoadMore) {
+            Log.d(TAG, "loadNextPage: already loading or cannot load more")
+            return
+        }
+        viewModelScope.launch {
+            val nextPage = state.value.currentPage + 1
+            _state.update { it.copy(isPaginationLoading = true) }
+
+            when (val response = useCase.invoke(state.value.query, nextPage)) {
+                is RMResponse.Success -> {
+                    Log.d(TAG, "loadNextPage: success")
+                    _state.update {
+                        it.copy(
+                            characters = it.characters + response.data,
+                            currentPage = nextPage,
+                            canLoadMore = response.hasNextPage,
+                            isPaginationLoading = false,
+                            errorMessageId = null,
+                            paginationErrorId = null
+                        )
+                    }
+                }
+
+                is RMResponse.Error -> {
+                    Log.d(TAG, "loadNextPage: error")
+                    _state.update {
+                        it.copy(
+                            paginationErrorId = response.messageId,
+                            isPaginationLoading = false
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun onSearch() {
         Log.d(TAG, "onSearch triggered manually")
         searchJob?.cancel()

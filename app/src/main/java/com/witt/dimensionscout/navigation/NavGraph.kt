@@ -34,6 +34,7 @@ fun AppNavHost(
                 onQueryChange = viewModel::onQueryChange,
                 onSearch = viewModel::onSearch,
                 onClearInputClick = viewModel::clearInput,
+                onLoadNextPage = viewModel::loadNextPage,
                 onCharacterClick = { index ->
                     val characterId = viewModel.onCharacterClick(index)
                     navController.navigate(CharacterDetail(characterId))
@@ -48,9 +49,12 @@ fun AppNavHost(
             val character = uiState.characters.find { it.id == detailRoute.itemId }
 
             if (character != null) {
-                CharacterDetailScreen(character = character, onCloseButtonClick = {
-                    navController.popBackStack()
-                })
+                CharacterDetailScreen(
+                    character = character,
+                    onCloseButtonClick = {
+                        navController.popBackStack()
+                    }
+                )
             } else {
                 navController.popBackStack()
             }

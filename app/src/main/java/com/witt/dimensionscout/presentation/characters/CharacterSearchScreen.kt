@@ -1,6 +1,7 @@
 package com.witt.dimensionscout.presentation.characters
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -53,6 +54,7 @@ fun CharacterSearchSearchWithResultsPreview() {
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -68,6 +70,7 @@ fun CharacterSearchSearchEmptyPreview() {
             showClearButton = false,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -86,6 +89,7 @@ fun CharacterSearchSearchLoadingPreview() {
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -104,6 +108,7 @@ fun CharacterSearchSearchErrorPreview() {
             showClearButton = true,
             onClearInputClick = {},
             onSearch = {},
+            onLoadNextPage = {},
             onCharacterClick = {},
             onQueryChange = {}
         )
@@ -116,16 +121,17 @@ fun CharacterSearchScreen(
     uiState: CharacterSearchState,
     onQueryChange: (String) -> Unit,
     onSearch: () -> Unit,
+    onLoadNextPage: () -> Unit,
     onCharacterClick: (Int) -> Unit,
     showClearButton: Boolean = false,
     onClearInputClick: () -> Unit
 ) {
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.fillMaxSize()) {
         CharacterSearchBar(
             uiState.query,
             onQueryChange,
-            uiState.isLoading,
+            uiState.isLoading || uiState.isPaginationLoading,
             showClearButton,
             onClearInputClick,
             onSearch
@@ -133,15 +139,26 @@ fun CharacterSearchScreen(
 
         when {
             uiState.errorMessageId != null -> {
-                ErrorComponent(message = stringResource( uiState.errorMessageId))
+                ErrorComponent(
+                    message = stringResource(uiState.errorMessageId),
+                    modifier = Modifier.weight(1f)
+                )
             }
 
             uiState.characters.isNotEmpty() -> {
-                CharacterList(uiState.characters, onCharacterClick = onCharacterClick)
+                CharacterList(
+                    modifier = Modifier.weight(1f),
+                    characters = uiState.characters,
+                    query = uiState.query,
+                    paginationErrorId = uiState.paginationErrorId,
+                    isPaginationLoading = uiState.isPaginationLoading,
+                    onCharacterClick = onCharacterClick,
+                    onLoadNextPage = onLoadNextPage
+                )
             }
 
             !uiState.isLoading && uiState.hasSearched -> {
-                EmptyResultsComponent()
+                EmptyResultsComponent(modifier = Modifier.weight(1f))
             }
         }
     }
