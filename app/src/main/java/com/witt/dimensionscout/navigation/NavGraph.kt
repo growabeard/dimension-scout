@@ -1,5 +1,6 @@
 package com.witt.dimensionscout.navigation
 
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -22,41 +23,45 @@ fun AppNavHost(
     val viewModel: CharacterSearchViewModel = koinViewModel()
     val uiState by viewModel.state.collectAsStateWithLifecycle()
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination
-    ) {
-        composable<CharacterGrid> {
-
-            CharacterSearchScreen(
-                uiState = uiState,
-                showClearButton = viewModel.showClearButton,
-                onQueryChange = viewModel::onQueryChange,
-                onSearch = viewModel::onSearch,
-                onClearInputClick = viewModel::clearInput,
-                onLoadNextPage = viewModel::loadNextPage,
-                onCharacterClick = { index ->
-                    val characterId = viewModel.onCharacterClick(index)
-                    navController.navigate(CharacterDetail(characterId))
-                },
-                modifier = modifier
-            )
-        }
-
-        composable<CharacterDetail> { backStackEntry ->
-            val detailRoute: CharacterDetail = backStackEntry.toRoute()
-
-            val character = uiState.characters.find { it.id == detailRoute.itemId }
-
-            if (character != null) {
-                CharacterDetailScreen(
-                    character = character,
-                    onCloseButtonClick = {
-                        navController.popBackStack()
-                    }
+    SharedTransitionLayout {
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+        ) {
+            composable<CharacterGrid> {
+                CharacterSearchScreen(
+                    uiState = uiState,
+                    showClearButton = viewModel.showClearButton,
+                    onQueryChange = viewModel::onQueryChange,
+                    onSearch = viewModel::onSearch,
+                    onClearInputClick = viewModel::clearInput,
+                    onLoadNextPage = viewModel::loadNextPage,
+                    onCharacterClick = { index ->
+                        val characterId = viewModel.onCharacterClick(index)
+                        navController.navigate(CharacterDetail(characterId))
+                    },
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@composable,
+                    modifier = modifier
                 )
-            } else {
-                navController.popBackStack()
+            }
+
+            composable<CharacterDetail> { backStackEntry ->
+                val detailRoute: CharacterDetail = backStackEntry.toRoute()
+                val character = uiState.characters.find { it.id == detailRoute.itemId }
+
+                if (character != null) {
+                    CharacterDetailScreen(
+                        character = character,
+                        onCloseButtonClick = {
+                            navController.popBackStack()
+                        },
+                        sharedTransitionScope = this@SharedTransitionLayout,
+                        animatedVisibilityScope = this@composable
+                    )
+                } else {
+                    navController.popBackStack()
+                }
             }
         }
     }

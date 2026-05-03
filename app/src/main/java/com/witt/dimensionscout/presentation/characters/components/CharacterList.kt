@@ -1,5 +1,9 @@
 package com.witt.dimensionscout.presentation.characters.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -54,14 +58,20 @@ import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 @Preview
 fun CharacterListEmptyPreview() {
     DimensionScoutTheme {
-        CharacterList(
-            characters = emptyList(),
-            query = "",
-            onCharacterClick = {},
-            onLoadNextPage = {},
-            paginationErrorId = null,
-            isPaginationLoading = false
-        )
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = emptyList(),
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = null,
+                    isPaginationLoading = false,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
     }
 }
 
@@ -69,43 +79,49 @@ fun CharacterListEmptyPreview() {
 @Preview
 fun CharacterListPopulatedPreview() {
     DimensionScoutTheme {
-        CharacterList(
-            characters = listOf(
-                Character(
-                    name = "Rick Sanchez",
-                    id = 1,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/1",
-                    created = "2017-11-04T18:48:46.250Z",
-                    displayDate = "November 4, 2017"
-                ),
-                Character(
-                    name = "Morty Smith",
-                    id = 2,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/2",
-                    created = "2017-11-04T18:50:21.651Z",
-                    displayDate = "November 4, 2017"
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = listOf(
+                        Character(
+                            name = "Rick Sanchez",
+                            id = 1,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/1",
+                            created = "2017-11-04T18:48:46.250Z",
+                            displayDate = "November 4, 2017"
+                        ),
+                        Character(
+                            name = "Morty Smith",
+                            id = 2,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/2",
+                            created = "2017-11-04T18:50:21.651Z",
+                            displayDate = "November 4, 2017"
+                        )
+                    ),
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = null,
+                    isPaginationLoading = false,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
                 )
-            ),
-            query = "",
-            onCharacterClick = {},
-            onLoadNextPage = {},
-            paginationErrorId = null,
-            isPaginationLoading = false
-        )
+            }
+        }
     }
 }
 
@@ -113,43 +129,49 @@ fun CharacterListPopulatedPreview() {
 @Preview
 fun CharacterListPopulatedErrorPreview() {
     DimensionScoutTheme {
-        CharacterList(
-            characters = listOf(
-                Character(
-                    name = "Rick Sanchez",
-                    id = 1,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/1",
-                    created = "2017-11-04T18:48:46.250Z",
-                    displayDate = "November 4, 2017"
-                ),
-                Character(
-                    name = "Morty Smith",
-                    id = 2,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/2",
-                    created = "2017-11-04T18:50:21.651Z",
-                    displayDate = "November 4, 2017"
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = listOf(
+                        Character(
+                            name = "Rick Sanchez",
+                            id = 1,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/1",
+                            created = "2017-11-04T18:48:46.250Z",
+                            displayDate = "November 4, 2017"
+                        ),
+                        Character(
+                            name = "Morty Smith",
+                            id = 2,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/2",
+                            created = "2017-11-04T18:50:21.651Z",
+                            displayDate = "November 4, 2017"
+                        )
+                    ),
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = R.string.error_http_400,
+                    isPaginationLoading = false,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
                 )
-            ),
-            query = "",
-            onCharacterClick = {},
-            onLoadNextPage = {},
-            paginationErrorId = R.string.error_http_400,
-            isPaginationLoading = false
-        )
+            }
+        }
     }
 }
 
@@ -157,43 +179,49 @@ fun CharacterListPopulatedErrorPreview() {
 @Composable
 fun CharacterListPopulatedLoadingPreview() {
     DimensionScoutTheme {
-        CharacterList(
-            characters = listOf(
-                Character(
-                    name = "Rick Sanchez",
-                    id = 1,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/1",
-                    created = "2017-11-04T18:48:46.250Z",
-                    displayDate = "November 4, 2017"
-                ),
-                Character(
-                    name = "Morty Smith",
-                    id = 2,
-                    status = "Alive",
-                    species = "Human",
-                    type = "",
-                    gender = "Male",
-                    origin = "Earth",
-                    image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                    episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                    url = "https://rickandmortyapi.com/api/character/2",
-                    created = "2017-11-04T18:50:21.651Z",
-                    displayDate = "November 4, 2017"
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = listOf(
+                        Character(
+                            name = "Rick Sanchez",
+                            id = 1,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/1",
+                            created = "2017-11-04T18:48:46.250Z",
+                            displayDate = "November 4, 2017"
+                        ),
+                        Character(
+                            name = "Morty Smith",
+                            id = 2,
+                            status = "Alive",
+                            species = "Human",
+                            type = "",
+                            gender = "Male",
+                            origin = "Earth",
+                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+                            url = "https://rickandmortyapi.com/api/character/2",
+                            created = "2017-11-04T18:50:21.651Z",
+                            displayDate = "November 4, 2017"
+                        )
+                    ),
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = null,
+                    isPaginationLoading = true,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
                 )
-            ),
-            query = "",
-            onCharacterClick = {},
-            onLoadNextPage = {},
-            paginationErrorId = null,
-            isPaginationLoading = true
-        )
+            }
+        }
     }
 }
 
@@ -202,11 +230,13 @@ fun CharacterListPopulatedLoadingPreview() {
 fun CharacterList(
     modifier: Modifier = Modifier,
     characters: List<Character>,
+    onCharacterClick: (Int) -> Unit,
     query: String,
     paginationErrorId: Int?,
     isPaginationLoading: Boolean,
-    onCharacterClick: (Int) -> Unit,
-    onLoadNextPage: () -> Unit
+    onLoadNextPage: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     val listState = rememberLazyGridState()
     var lastScrolledQuery by rememberSaveable { mutableStateOf<String?>(null) }
@@ -242,7 +272,9 @@ fun CharacterList(
         }) { index ->
             CharacterCard(
                 character = characters[index],
-                onCharacterClick = { onCharacterClick(index) }
+                onCharacterClick = { onCharacterClick(index) },
+                sharedTransitionScope = sharedTransitionScope,
+                animatedVisibilityScope = animatedVisibilityScope
             )
         }
 
@@ -298,7 +330,9 @@ fun PaginationErrorItem(
 @Composable
 fun CharacterCard(
     character: Character,
-    onCharacterClick: () -> Unit
+    onCharacterClick: () -> Unit,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
     Card(
         modifier = Modifier
@@ -309,22 +343,31 @@ fun CharacterCard(
         onClick = { onCharacterClick() }
     ) {
         Column {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(character.image)
-                    .crossfade(true)
-                    .diskCachePolicy(CachePolicy.ENABLED)
-                    .memoryCachePolicy(CachePolicy.ENABLED)
-                    .build(),
-                contentDescription = stringResource(R.string.image_of_character, character.name),
-                placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
-                error = rememberVectorPainter(Icons.Default.AccountCircle),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                contentScale = ContentScale.Crop
-            )
+            with(sharedTransitionScope) {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(character.image)
+                        .crossfade(true)
+                        .diskCachePolicy(CachePolicy.ENABLED)
+                        .memoryCachePolicy(CachePolicy.ENABLED)
+                        .build(),
+                    contentDescription = stringResource(
+                        R.string.image_of_character,
+                        character.name
+                    ),
+                    placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
+                    error = rememberVectorPainter(Icons.Default.AccountCircle),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .aspectRatio(1f)
+                        .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                        .sharedElement(
+                            rememberSharedContentState(key = "image-${character.id}"),
+                            animatedVisibilityScope = animatedVisibilityScope
+                        ),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
             Text(
                 text = character.name,
