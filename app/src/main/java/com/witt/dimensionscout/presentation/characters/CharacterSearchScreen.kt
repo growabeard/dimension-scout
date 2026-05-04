@@ -17,6 +17,7 @@ import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
 import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
+import com.witt.dimensionscout.presentation.characters.components.characterList
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
 @Preview(showSystemUi = true)
