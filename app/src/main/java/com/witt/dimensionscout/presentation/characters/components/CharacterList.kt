@@ -279,6 +279,8 @@ fun CharacterListPopulatedLoadingPreview() {
 }
 
 
+private val MinCharacterCardWidth = 170.dp
+
 @Composable
 fun CharacterList(
     modifier: Modifier = Modifier,
@@ -316,7 +318,7 @@ fun CharacterList(
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(MinCharacterCardWidth),
         contentPadding = PaddingValues(8.dp),
         state = listState
     ) {
@@ -332,14 +334,14 @@ fun CharacterList(
         }
 
         if (paginationErrorId != null) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 PaginationErrorItem(
                     message = stringResource(paginationErrorId),
                     onRetry = onLoadNextPage
                 )
             }
         } else if (isPaginationLoading) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -395,7 +397,9 @@ fun CharacterCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         onClick = { onCharacterClick() }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             with(sharedTransitionScope) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -404,10 +408,7 @@ fun CharacterCard(
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .build(),
-                    contentDescription = stringResource(
-                        R.string.image_of_character,
-                        character.name
-                    ),
+                    contentDescription = null,
                     placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
                     error = rememberVectorPainter(Icons.Default.AccountCircle),
                     modifier = Modifier
