@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.witt.dimensionscout.R
-import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
