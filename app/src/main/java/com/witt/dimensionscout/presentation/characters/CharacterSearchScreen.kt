@@ -12,11 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.witt.dimensionscout.R
-import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.presentation.characters.components.CharacterList
 import com.witt.dimensionscout.presentation.characters.components.CharacterSearchBar
 import com.witt.dimensionscout.presentation.characters.components.EmptyResultsComponent
 import com.witt.dimensionscout.presentation.characters.components.ErrorComponent
+import com.witt.dimensionscout.presentation.characters.components.characterList
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
 @Preview(showSystemUi = true)
@@ -27,36 +27,35 @@ fun CharacterSearchSearchWithResultsPreview() {
             AnimatedVisibility(visible = true) {
                 CharacterSearchScreen(
                     uiState = CharacterSearchState(
-                        characters = listOf(
-                            Character(
-                                name = "Rick Sanchez",
-                                id = 1,
-                                status = "Alive",
-                                species = "Human",
-                                type = "",
-                                gender = "Male",
-                                origin = "Earth",
-                                image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                                episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                                url = "https://rickandmortyapi.com/api/character/1",
-                                created = "2017-11-04T18:48:46.250Z",
-                                displayDate = "November 4, 2017"
-                            ),
-                            Character(
-                                name = "Morty Smith",
-                                id = 2,
-                                status = "Alive",
-                                species = "Human",
-                                type = "",
-                                gender = "Male",
-                                origin = "Earth",
-                                image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                                episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                                url = "https://rickandmortyapi.com/api/character/2",
-                                created = "2017-11-04T18:50:21.651Z",
-                                displayDate = "November 4, 2017"
-                            )
-                        ),
+                        characters = characterList,
+                    ),
+                    showClearButton = false,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+@Composable
+fun CharacterSearchSearchWithResultsPreviewLandscape() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(
+                        characters = characterList,
                     ),
                     showClearButton = false,
                     onClearInputClick = {},
@@ -122,6 +121,35 @@ fun CharacterSearchSearchLoadingPreview() {
 @Preview(showSystemUi = true)
 @Composable
 fun CharacterSearchSearchErrorPreview() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = CharacterSearchState(
+                        query = "Rick",
+                        errorMessageId = R.string.error_generic_exception,
+                    ),
+                    showClearButton = true,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+@Composable
+fun CharacterSearchSearchErrorLandscapePreview() {
     DimensionScoutTheme {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {

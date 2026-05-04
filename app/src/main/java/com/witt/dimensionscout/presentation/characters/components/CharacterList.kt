@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -54,6 +54,97 @@ import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
+val characterList = listOf(
+    Character(
+        name = "Rick Sanchez",
+        id = 1,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 2,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 3,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 4,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 5,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 6,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 7,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 8,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    )
+)
+
 @Composable
 @Preview
 fun CharacterListEmptyPreview() {
@@ -82,36 +173,32 @@ fun CharacterListPopulatedPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = null,
+                    isPaginationLoading = false,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+fun CharacterListPopulatedLandscapePreview() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -132,36 +219,7 @@ fun CharacterListPopulatedErrorPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -182,36 +240,7 @@ fun CharacterListPopulatedLoadingPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -225,6 +254,8 @@ fun CharacterListPopulatedLoadingPreview() {
     }
 }
 
+
+private val MinCharacterCardWidth = 170.dp
 
 @Composable
 fun CharacterList(
@@ -263,7 +294,7 @@ fun CharacterList(
 
     LazyVerticalGrid(
         modifier = modifier.fillMaxWidth(),
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Adaptive(MinCharacterCardWidth),
         contentPadding = PaddingValues(8.dp),
         state = listState
     ) {
@@ -279,14 +310,14 @@ fun CharacterList(
         }
 
         if (paginationErrorId != null) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 PaginationErrorItem(
                     message = stringResource(paginationErrorId),
                     onRetry = onLoadNextPage
                 )
             }
         } else if (isPaginationLoading) {
-            item(span = { GridItemSpan(2) }) {
+            item(span = { GridItemSpan(maxLineSpan) }) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -342,7 +373,9 @@ fun CharacterCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         onClick = { onCharacterClick() }
     ) {
-        Column {
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             with(sharedTransitionScope) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -351,12 +384,9 @@ fun CharacterCard(
                         .diskCachePolicy(CachePolicy.ENABLED)
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .build(),
-                    contentDescription = stringResource(
-                        R.string.image_of_character,
-                        character.name
-                    ),
-                    placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
-                    error = rememberVectorPainter(Icons.Default.AccountCircle),
+                    contentDescription = null,
+                    placeholder = rememberVectorPainter(Icons.Default.AccountBox),
+                    error = rememberVectorPainter(Icons.Default.AccountBox),
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
