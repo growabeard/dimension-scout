@@ -54,6 +54,121 @@ import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
+private val characterList = listOf(
+    Character(
+        name = "Rick Sanchez",
+        id = 1,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/1",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 2,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/2",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 3,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/1",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 4,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/2",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 5,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/1",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 6,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/2",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Rick Sanchez",
+        id = 7,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/1",
+        created = "2017-11-04T18:48:46.250Z",
+        displayDate = "November 4, 2017"
+    ),
+    Character(
+        name = "Morty Smith",
+        id = 8,
+        status = "Alive",
+        species = "Human",
+        type = "",
+        gender = "Male",
+        origin = "Earth",
+        image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
+        url = "https://rickandmortyapi.com/api/character/2",
+        created = "2017-11-04T18:50:21.651Z",
+        displayDate = "November 4, 2017"
+    )
+)
+
 @Composable
 @Preview
 fun CharacterListEmptyPreview() {
@@ -82,36 +197,32 @@ fun CharacterListPopulatedPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
+                    query = "",
+                    onCharacterClick = {},
+                    onLoadNextPage = {},
+                    paginationErrorId = null,
+                    isPaginationLoading = false,
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+fun CharacterListPopulatedLandscapePreview() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterList(
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -132,36 +243,7 @@ fun CharacterListPopulatedErrorPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -182,36 +264,7 @@ fun CharacterListPopulatedLoadingPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = listOf(
-                        Character(
-                            name = "Rick Sanchez",
-                            id = 1,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/1",
-                            created = "2017-11-04T18:48:46.250Z",
-                            displayDate = "November 4, 2017"
-                        ),
-                        Character(
-                            name = "Morty Smith",
-                            id = 2,
-                            status = "Alive",
-                            species = "Human",
-                            type = "",
-                            gender = "Male",
-                            origin = "Earth",
-                            image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-                            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                            url = "https://rickandmortyapi.com/api/character/2",
-                            created = "2017-11-04T18:50:21.651Z",
-                            displayDate = "November 4, 2017"
-                        )
-                    ),
+                    characters = characterList,
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
