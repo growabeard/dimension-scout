@@ -55,10 +55,7 @@ fun CharacterDetailPreview() {
                         status = "Alive",
                         species = "Human",
                         type = "",
-                        gender = "Male",
                         image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                        url = "https://rickandmortyapi.com/api/character/1",
                         created = "2017-11-04T18:48:46.250Z",
                         origin = "Earth",
                         displayDate = "November 4, 2017"
@@ -89,10 +86,7 @@ fun CharacterDetailLandscapePreview() {
                         status = "Alive",
                         species = "Human",
                         type = "",
-                        gender = "Male",
                         image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-                        episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-                        url = "https://rickandmortyapi.com/api/character/1",
                         created = "2017-11-04T18:48:46.250Z",
                         origin = "Earth",
                         displayDate = "November 4, 2017"

@@ -35,11 +35,8 @@ class CharacterSearchViewModelTest {
             status = "Alive",
             species = "Human",
             type = "",
-            gender = "Male",
             origin = "Earth",
             image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-            url = "https://rickandmortyapi.com/api/character/1",
             created = "2017-11-04T18:48:46.250Z",
             displayDate = "November 4, 2017"
         ),
@@ -49,11 +46,8 @@ class CharacterSearchViewModelTest {
             status = "Alive",
             species = "Human",
             type = "",
-            gender = "Male",
             origin = "Earth",
             image = "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
-            episode = listOf("https://rickandmortyapi.com/api/episode/1"),
-            url = "https://rickandmortyapi.com/api/character/2",
             created = "2017-11-04T18:50:21.651Z",
             displayDate = "November 4, 2017"
         )
