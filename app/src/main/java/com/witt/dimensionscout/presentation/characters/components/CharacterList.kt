@@ -20,7 +20,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -409,8 +409,8 @@ fun CharacterCard(
                         .memoryCachePolicy(CachePolicy.ENABLED)
                         .build(),
                     contentDescription = null,
-                    placeholder = rememberVectorPainter(Icons.Default.AccountCircle),
-                    error = rememberVectorPainter(Icons.Default.AccountCircle),
+                    placeholder = rememberVectorPainter(Icons.Default.AccountBox),
+                    error = rememberVectorPainter(Icons.Default.AccountBox),
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1f)
