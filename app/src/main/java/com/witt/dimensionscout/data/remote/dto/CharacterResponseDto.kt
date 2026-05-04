@@ -30,11 +30,8 @@ data class CharacterDto(
     val status: String,
     val species: String,
     val type: String,
-    val gender: String,
     val origin: Origin,
     val image: String,
-    val episode: List<String>,
-    val url: String,
     val created: String
 ) {
     fun toDomain(): Character {
@@ -44,10 +41,7 @@ data class CharacterDto(
             status = status,
             species = species,
             type = type,
-            gender = gender,
             image = image,
-            episode = episode,
-            url = url,
             created = created,
             displayDate = buildDisplayDate(),
             origin = origin.name
