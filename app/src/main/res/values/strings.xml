@@ -7,6 +7,11 @@
     <string name="empty_icon_description">No results found.</string>
     <string name="image_of_character">Image of %1$s</string>
     <string name="close_content_description">Close</string>
+    <string name="label_species">Species</string>
+    <string name="label_status">Status</string>
+    <string name="label_origin">Origin</string>
+    <string name="label_type">Type</string>
+    <string name="label_created">Created</string>
     <string name="error_io_exception">Please check your internet connection and try again.</string>
     <string name="error_http_400">Invalid request, please try again later with different criteria.</string>
     <string name="error_http_429">Too many requests. Please wait a moment and try again.</string>

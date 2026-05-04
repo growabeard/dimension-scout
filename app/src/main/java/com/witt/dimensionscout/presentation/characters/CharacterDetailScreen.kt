@@ -150,7 +150,6 @@ fun CharacterDetailScreen(
                     animatedVisibilityScope = animatedVisibilityScope,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .aspectRatio(1f)
                 )
 
                 CharacterDetailsContent(
@@ -169,7 +168,6 @@ fun CharacterDetailScreen(
                     sharedTransitionScope = sharedTransitionScope,
                     animatedVisibilityScope = animatedVisibilityScope,
                     modifier = Modifier
-                        .weight(1f)
                         .fillMaxHeight()
                 )
 
@@ -201,10 +199,12 @@ private fun CharacterImage(
                 R.string.image_of_character,
                 character.name
             ),
-            modifier = modifier.sharedElement(
-                rememberSharedContentState(key = "image-${character.id}"),
-                animatedVisibilityScope = animatedVisibilityScope
-            ),
+            modifier = modifier
+                .sharedElement(
+                    rememberSharedContentState(key = "image-${character.id}"),
+                    animatedVisibilityScope = animatedVisibilityScope
+                )
+                .aspectRatio(1f),
             placeholder = rememberVectorPainter(Icons.Default.AccountBox),
             error = rememberVectorPainter(Icons.Default.AccountBox),
             contentScale = ContentScale.Crop
