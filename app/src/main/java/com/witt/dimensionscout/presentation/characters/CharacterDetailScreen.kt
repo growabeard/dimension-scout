@@ -78,7 +78,12 @@ fun CharacterDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { },
+                title = { 
+                    Text(
+                        text = character.name,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onCloseButtonClick) {
                         Icon(
@@ -120,16 +125,6 @@ fun CharacterDetailScreen(
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                Text(
-                    text = character.name,
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                )
-
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-
                 DetailItem(label = "Species", value = character.species)
                 DetailItem(label = "Status", value = character.status)
                 DetailItem(label = "Origin", value = character.origin)
