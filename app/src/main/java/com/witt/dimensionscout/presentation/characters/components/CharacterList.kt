@@ -54,7 +54,7 @@ import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.ui.theme.DimensionScoutTheme
 
-private val characterList = listOf(
+val characterList = listOf(
     Character(
         name = "Rick Sanchez",
         id = 1,
