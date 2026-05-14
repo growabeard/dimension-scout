@@ -12,10 +12,10 @@ import java.net.HttpURLConnection.HTTP_NOT_FOUND
 
 class CharacterRepositoryImpl(private val apiService: CharacterApiService) : CharacterRepository {
 
-    private lateinit var cachedCharacters: MutableMap<Pair<String, Int>, RMResponse>
+    private var cachedCharacters: MutableMap<Pair<String, Int>, RMResponse> = mutableMapOf()
     override suspend fun getCharacters(query: String, page: Int): RMResponse {
         try {
-            val cachedResponse = cachedCharacters.get(Pair(query, page))
+            val cachedResponse = cachedCharacters[Pair(query, page)]
             if (cachedResponse != null) {
                 return cachedResponse
             } else {
