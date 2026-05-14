@@ -172,6 +172,64 @@ fun CharacterSearchSearchErrorLandscapePreview() {
     }
 }
 
+@Preview(
+    showBackground = true,
+)
+@Composable
+fun CharacterSearchEmptyScreenPortraitPreview() {
+    val characterState = CharacterSearchState(
+        characters = emptyList(),
+        hasSearched = true
+    )
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = characterState,
+                    showClearButton = false,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+@Composable
+fun CharacterSearchEmptyScreenLandscapePreview() {
+    val characterState = CharacterSearchState(
+        characters = emptyList(),
+        hasSearched = true
+    )
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterSearchScreen(
+                    uiState = characterState,
+                    showClearButton = false,
+                    onClearInputClick = {},
+                    onSearch = {},
+                    onCharacterClick = {},
+                    onQueryChange = {},
+                    onLoadNextPage = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility
+                )
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun CharacterSearchScreen(
