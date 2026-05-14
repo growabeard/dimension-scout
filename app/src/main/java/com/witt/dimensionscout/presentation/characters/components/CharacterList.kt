@@ -219,7 +219,7 @@ fun CharacterListPopulatedErrorPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = characterList,
+                    characters = characterList.subList(1,6),
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
@@ -240,7 +240,7 @@ fun CharacterListPopulatedLoadingPreview() {
         SharedTransitionLayout {
             AnimatedVisibility(visible = true) {
                 CharacterList(
-                    characters = characterList,
+                    characters = characterList.subList(1,6),
                     query = "",
                     onCharacterClick = {},
                     onLoadNextPage = {},
