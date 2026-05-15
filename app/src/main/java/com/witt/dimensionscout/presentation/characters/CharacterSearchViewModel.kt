@@ -12,9 +12,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewModel() {
 
-    private val _state = MutableStateFlow(CharacterSearchState())
+class CharacterSearchViewModel(
+    private val useCase: GetCharacterUseCase,
+    private val savedStateHandle: SavedStateHandle,
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(
+        CharacterSearchState(
+            query = savedStateHandle[QUERY] ?: "",
+            characterDetail = savedStateHandle[CHARACTER_DETAIL],
+        )
+    )
     val state = _state.asStateFlow()
 
     private var searchJob: Job? = null
@@ -31,6 +40,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
     fun onQueryChange(newQuery: String) {
         Log.d(TAG, "onQueryChange: $newQuery")
         _state.update { it.copy(query = newQuery) }
+        savedStateHandle[QUERY] = newQuery
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -42,6 +52,7 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
     fun clearInput() {
         Log.d(TAG, "clearInput")
         _state.update { it.copy(query = "") }
+        savedStateHandle[QUERY] = ""
 
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -129,8 +140,12 @@ class CharacterSearchViewModel(private val useCase: GetCharacterUseCase) : ViewM
         }
     }
 
-
     companion object {
         private const val TAG = "CharacterSearchViewModel"
+
+        private const val QUERY = "query"
+        private const val CHARACTER_DETAIL = "characterDetail"
+
+
     }
 }
