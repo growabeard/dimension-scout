@@ -7,6 +7,9 @@
     <string name="empty_icon_description">No results found.</string>
     <string name="image_of_character">Image of %1$s</string>
     <string name="close_content_description">Close</string>
+    <string name="share_content_description">Share character details</string>
+    <string name="share_character_message">Check out %1$s from Dimension Scout!</string>
+    <string name="share_character_title">Share Character</string>
     <string name="label_species">Species</string>
     <string name="label_status">Status</string>
     <string name="label_origin">Origin</string>
@@ -18,4 +21,5 @@
     <string name="error_http_exception">An error occurred, please try again later.</string>
     <string name="error_generic_exception">An error occurred, please try again later.</string>
     <string name="retry">Retry</string>
+    <string name="error_sharing_failed">Sharing failed, try again later.</string>
 </resources>

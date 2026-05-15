@@ -1,14 +1,19 @@
 package com.witt.dimensionscout.presentation.characters
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.witt.dimensionscout.R
 import com.witt.dimensionscout.data.remote.dto.RMResponse
+import com.witt.dimensionscout.domain.model.Character
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -20,11 +25,13 @@ class CharacterSearchViewModel(
 
     private val _state = MutableStateFlow(
         CharacterSearchState(
-            query = savedStateHandle[QUERY] ?: "",
-            characterDetail = savedStateHandle[CHARACTER_DETAIL],
+            query = savedStateHandle[QUERY] ?: ""
         )
     )
     val state = _state.asStateFlow()
+
+    private val _eventFlow = Channel<UiEvent>()
+    val eventFlow = _eventFlow.receiveAsFlow()
 
     private var searchJob: Job? = null
 
@@ -60,11 +67,12 @@ class CharacterSearchViewModel(
         }
     }
 
-    fun onCharacterClick(index: Int): Int {
-        Log.d(TAG, "onCharacterClick: $index")
-        val character = _state.value.characters[index]
-        Log.d(TAG, "onCharacterClick: $character")
-        return character.id
+    fun onCharacterClick(id: Int) {
+        Log.d(TAG, "onCharacterClick: $id")
+    }
+
+    fun onCharacterDetailClosed() {
+        Log.d(TAG, "onCharacterDetailClosed")
     }
 
     private suspend fun getCharacters() {
@@ -87,8 +95,12 @@ class CharacterSearchViewModel(
 
             is RMResponse.Error -> {
                 Log.d(TAG, "getCharacters: error")
-                _state.update { it.copy(errorMessageId = response.messageId,
-                    isLoading = false) }
+                _state.update {
+                    it.copy(
+                        errorMessageId = response.messageId,
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -132,6 +144,26 @@ class CharacterSearchViewModel(
         }
     }
 
+    fun onCharacterShareClicked(char: Character) {
+        if (_state.value.isSharing) {
+            Log.d(TAG, "onCharacterShareClicked: already sharing")
+            return
+        }
+        Log.d(TAG, "onCharacterShareClicked: ${char.id}")
+        viewModelScope.launch {
+            _state.update { it.copy(isSharing = true) }
+
+            try {
+                _eventFlow.send(UiEvent.ShareCharacter(char))
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to share character: ${char.id}, ${e.message}", e)
+                _state.update { it.copy(shareErrorId = R.string.error_sharing_failed) }
+            } finally {
+                _state.update { it.copy(isSharing = false) }
+            }
+        }
+    }
+
     fun onSearch() {
         Log.d(TAG, "onSearch triggered manually")
         searchJob?.cancel()
@@ -144,8 +176,5 @@ class CharacterSearchViewModel(
         private const val TAG = "CharacterSearchViewModel"
 
         private const val QUERY = "query"
-        private const val CHARACTER_DETAIL = "characterDetail"
-
-
     }
 }

@@ -11,5 +11,7 @@ data class CharacterSearchState(
     val isPaginationLoading: Boolean = false,
     val hasSearched: Boolean = false,
     val errorMessageId: Int? = null,
-    val paginationErrorId: Int? = null
+    val paginationErrorId: Int? = null,
+    val isSharing: Boolean = false,
+    val shareErrorId: Int? = null
 )

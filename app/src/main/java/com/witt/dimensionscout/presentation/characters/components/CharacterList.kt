@@ -303,7 +303,7 @@ fun CharacterList(
         }) { index ->
             CharacterCard(
                 character = characters[index],
-                onCharacterClick = { onCharacterClick(index) },
+                onCharacterClick = { onCharacterClick(characters[index].id) },
                 sharedTransitionScope = sharedTransitionScope,
                 animatedVisibilityScope = animatedVisibilityScope
             )

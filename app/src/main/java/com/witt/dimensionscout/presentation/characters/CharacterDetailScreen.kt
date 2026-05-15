@@ -5,7 +5,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,6 +22,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,7 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
@@ -37,6 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.witt.dimensionscout.R
 import com.witt.dimensionscout.domain.model.Character
@@ -60,9 +67,11 @@ fun CharacterDetailPreview() {
                         origin = "Earth",
                         displayDate = "November 4, 2017"
                     ),
-                    {},
-                    this@SharedTransitionLayout,
-                    this@AnimatedVisibility
+                    onCloseButtonClick = {},
+                    onShareButtonClick = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility,
+                    uiState = CharacterSearchState()
                 )
             }
         }
@@ -91,9 +100,73 @@ fun CharacterDetailLandscapePreview() {
                         origin = "Earth",
                         displayDate = "November 4, 2017"
                     ),
-                    {},
-                    this@SharedTransitionLayout,
-                    this@AnimatedVisibility
+                    onCloseButtonClick = {},
+                    onShareButtonClick = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility,
+                    uiState = CharacterSearchState()
+                )
+            }
+        }
+    }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun CharacterDetailSharingPreview() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterDetailScreen(
+                    Character(
+                        name = "Rick Sanchez",
+                        id = 1,
+                        status = "Alive",
+                        species = "Human",
+                        type = "",
+                        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                        created = "2017-11-04T18:48:46.250Z",
+                        origin = "Earth",
+                        displayDate = "November 4, 2017"
+                    ),
+                    onCloseButtonClick = {},
+                    onShareButtonClick = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility,
+                    uiState = CharacterSearchState(isSharing = true)
+                )
+            }
+        }
+    }
+}
+
+@Preview(
+    name = "Landscape Mode",
+    showBackground = true,
+    device = "spec:width=1080dp,height=600dp,dpi=440"
+)
+@Composable
+fun CharacterDetailSharingLandscapePreview() {
+    DimensionScoutTheme {
+        SharedTransitionLayout {
+            AnimatedVisibility(visible = true) {
+                CharacterDetailScreen(
+                    Character(
+                        name = "Rick Sanchez",
+                        id = 1,
+                        status = "Alive",
+                        species = "Human",
+                        type = "",
+                        image = "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+                        created = "2017-11-04T18:48:46.250Z",
+                        origin = "Earth",
+                        displayDate = "November 4, 2017"
+                    ),
+                    onCloseButtonClick = {},
+                    onShareButtonClick = {},
+                    sharedTransitionScope = this@SharedTransitionLayout,
+                    animatedVisibilityScope = this@AnimatedVisibility,
+                    uiState = CharacterSearchState(isSharing = true)
                 )
             }
         }
@@ -105,8 +178,10 @@ fun CharacterDetailLandscapePreview() {
 fun CharacterDetailScreen(
     character: Character,
     onCloseButtonClick: () -> Unit,
+    onShareButtonClick: (Character) -> Unit,
     sharedTransitionScope: SharedTransitionScope,
-    animatedVisibilityScope: AnimatedVisibilityScope
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    uiState: CharacterSearchState
 ) {
     val configuration = LocalConfiguration.current
     val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
@@ -114,6 +189,14 @@ fun CharacterDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
+                actions = {
+                    IconButton(onClick = { onShareButtonClick(character) }) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = stringResource(R.string.share_content_description)
+                        )
+                    }
+                },
                 title = {
                     Text(
                         text = character.name,
@@ -131,48 +214,67 @@ fun CharacterDetailScreen(
             )
         }
     ) { innerPadding ->
-        if (isPortrait) {
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                CharacterImage(
-                    character = character,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope,
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (uiState.isSharing) {
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                )
-
-                CharacterDetailsContent(
-                    character = character,
-                    modifier = Modifier.padding(24.dp)
-                )
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.5f))
+                        .zIndex(1f)
+                        .pointerInput(Unit) {
+                            awaitPointerEventScope {
+                                while (true) {
+                                    awaitPointerEvent()
+                                }
+                            }
+                        }
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else {
-            Row(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .fillMaxSize()
-            ) {
-                CharacterImage(
-                    character = character,
-                    sharedTransitionScope = sharedTransitionScope,
-                    animatedVisibilityScope = animatedVisibilityScope,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                )
-
+            if (isPortrait) {
                 Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
+                        .padding(innerPadding)
+                        .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(24.dp)
                 ) {
-                    CharacterDetailsContent(character = character)
+                    CharacterImage(
+                        character = character,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+
+                    CharacterDetailsContent(
+                        character = character,
+                        modifier = Modifier.padding(24.dp)
+                    )
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize()
+                ) {
+                    CharacterImage(
+                        character = character,
+                        sharedTransitionScope = sharedTransitionScope,
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                    )
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .verticalScroll(rememberScrollState())
+                            .padding(24.dp)
+                    ) {
+                        CharacterDetailsContent(character = character)
+                    }
                 }
             }
         }
