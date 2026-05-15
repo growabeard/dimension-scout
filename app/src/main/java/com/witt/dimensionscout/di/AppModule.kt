@@ -5,6 +5,8 @@ import com.witt.dimensionscout.data.repository.CharacterRepositoryImpl
 import com.witt.dimensionscout.domain.repository.CharacterRepository
 import com.witt.dimensionscout.domain.use_case.GetCharacterUseCase
 import com.witt.dimensionscout.presentation.characters.CharacterSearchViewModel
+import com.witt.dimensionscout.util.CharacterSharer
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -12,6 +14,7 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import coil.imageLoader
 
 val appModule = module {
     single {
@@ -26,6 +29,10 @@ val appModule = module {
     singleOf(::CharacterRepositoryImpl) bind CharacterRepository::class
 
     factoryOf(::GetCharacterUseCase)
+
+    single { androidContext().imageLoader }
+
+    single { CharacterSharer(androidContext(), get()) }
 
     viewModelOf(::CharacterSearchViewModel)
 }
